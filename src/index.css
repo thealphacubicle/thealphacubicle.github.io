@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-slate-900 text-slate-100 font-sans antialiased;
+  }
+
+  ::selection {
+    @apply bg-brand/60 text-white;
+  }
+}
+
+@layer components {
+  .section-heading {
+    @apply text-3xl md:text-4xl font-heading font-semibold text-white tracking-tight;
+  }
+
+  .section-subtitle {
+    @apply text-base text-brand-muted;
+  }
+}
