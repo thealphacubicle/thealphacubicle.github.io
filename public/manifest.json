@@ -1,0 +1,15 @@
+{
+  "short_name": "Portfolio",
+  "name": "React Portfolio Template",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0ea5e9",
+  "background_color": "#0f172a"
+}
