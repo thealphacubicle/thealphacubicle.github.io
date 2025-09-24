@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const baseStyles = 'inline-flex items-center justify-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-transform duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900';
+const baseStyles = 'inline-flex items-center justify-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-transform duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream';
 
 const variants = {
-  primary: 'bg-brand hover:bg-brand-light text-white shadow-glow hover:-translate-y-0.5',
-  secondary: 'bg-white/10 text-white hover:bg-white/20',
+  primary: 'bg-gradient-to-r from-brand via-brand-light to-brand text-brand-cream shadow-glow hover:shadow-card hover:-translate-y-0.5',
+  secondary: 'border border-brand/30 bg-brand-sand/80 text-brand-deep hover:border-brand hover:bg-brand-sand hover:-translate-y-0.5',
   outline: 'border border-brand text-brand hover:bg-brand/10',
 };
 

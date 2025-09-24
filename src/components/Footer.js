@@ -4,13 +4,12 @@ function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/10 bg-slate-900">
+    <footer className="border-t border-brand/20 bg-brand-deep text-brand-cream">
       <div className="mx-auto grid max-w-6xl gap-8 px-6 py-10 md:grid-cols-3">
         <div>
-          <h3 className="text-lg font-semibold text-white">{/* Replace with your name */}Your Name</h3>
-          <p className="mt-3 text-sm text-brand-muted">
-            {/* Update with your contact details */}
-            Available for freelance opportunities and exciting full-time roles. Let's build something great together.
+          <h3 className="text-lg font-semibold">Srihari Raman</h3>
+          <p className="mt-3 text-sm text-brand-cream/80">
+            Building civic-first AI, crypto, and digital infrastructure so public services feel modern, fast, and human.
           </p>
         </div>
         <div>
@@ -18,11 +17,11 @@ function Footer() {
           <ul className="mt-3 space-y-2 text-sm">
             <li>
               Email:{' '}
-              <a className="text-brand-light hover:text-brand" href="mailto:hello@example.com">
-                hello@example.com
+              <a className="text-brand-light hover:text-brand" href="mailto:thealphacubicle.dev@gmail.com">
+                thealphacubicle.dev@gmail.com
               </a>
             </li>
-            <li>Location: Remote / Your City</li>
+            <li>Location: Boston, MA · Remote friendly</li>
           </ul>
         </div>
         <div>
@@ -30,26 +29,21 @@ function Footer() {
           <ul className="mt-3 flex flex-wrap gap-3 text-sm">
             {/* Replace # with your social profile links */}
             <li>
-              <a className="text-brand-light transition hover:text-brand" href="#" aria-label="LinkedIn">
+              <a className="text-brand-light transition hover:text-brand" href="https://www.linkedin.com/in/srihari-r-006034176/" aria-label="LinkedIn">
                 LinkedIn
               </a>
             </li>
             <li>
-              <a className="text-brand-light transition hover:text-brand" href="#" aria-label="GitHub">
+              <a className="text-brand-light transition hover:text-brand" href="https://github.com/thealphacubicle" aria-label="GitHub">
                 GitHub
-              </a>
-            </li>
-            <li>
-              <a className="text-brand-light transition hover:text-brand" href="#" aria-label="Twitter">
-                Twitter
               </a>
             </li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-white/5 bg-slate-900/80 py-4">
+      <div className="border-t border-brand/25 bg-brand-ink/60 py-4">
         <p className="mx-auto max-w-6xl px-6 text-xs text-brand-muted">
-          &copy; {year} {/* Replace with your name */}Your Name. All rights reserved.
+          &copy; {year} Srihari Raman. All rights reserved.
         </p>
       </div>
     </footer>

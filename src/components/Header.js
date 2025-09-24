@@ -16,16 +16,16 @@ function Header() {
   }, [location.pathname]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-900/80 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-brand/15 bg-brand-cream/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link
           to="/"
-          className="flex items-center gap-2 text-lg font-semibold tracking-tight text-white transition hover:text-brand-light"
+          className="flex items-center gap-2 text-lg font-semibold tracking-tight text-brand-deep transition hover:text-brand-light"
         >
           {/* Replace the text below with your personal branding */}
-          <span className="text-brand">Your Name</span>
-          <span className="hidden text-sm font-medium uppercase tracking-[0.2em] text-brand-muted sm:inline">
-            Portfolio
+          <span className="rounded-full bg-brand-sand px-3 py-1 text-brand">Srihari Raman</span>
+          <span className="hidden text-xs font-medium uppercase tracking-[0.35em] text-brand-muted sm:inline">
+            Impact AI Builder
           </span>
         </Link>
         <nav className="hidden items-center gap-8 text-sm font-medium text-brand-muted md:flex">
@@ -35,8 +35,8 @@ function Header() {
               to={item.to}
               className={({ isActive }) =>
                 [
-                  'transition-colors duration-200 hover:text-white',
-                  isActive ? 'text-white' : 'text-brand-muted',
+                  'transition-colors duration-200 hover:text-brand',
+                  isActive ? 'text-brand' : 'text-brand-muted',
                 ].join(' ')
               }
             >
@@ -49,7 +49,7 @@ function Header() {
         </nav>
         <button
           type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white transition hover:border-brand hover:text-brand md:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-brand/20 text-brand-deep transition hover:border-brand hover:text-brand md:hidden"
           onClick={() => setIsOpen((prev) => !prev)}
           aria-label="Toggle navigation menu"
         >
@@ -71,7 +71,7 @@ function Header() {
         </button>
       </div>
       {isOpen && (
-        <div className="border-t border-white/10 bg-slate-900/95 backdrop-blur md:hidden">
+        <div className="border-t border-brand/15 bg-brand-cream/95 backdrop-blur md:hidden">
           <div className="mx-auto flex max-w-6xl flex-col space-y-2 px-6 py-4 text-base text-brand-muted">
             {navigation.map((item) => (
               <NavLink
@@ -79,8 +79,8 @@ function Header() {
                 to={item.to}
                 className={({ isActive }) =>
                   [
-                    'rounded-lg px-3 py-2 transition hover:bg-white/10 hover:text-white',
-                    isActive ? 'bg-white/5 text-white' : 'text-brand-muted',
+                    'rounded-lg px-3 py-2 transition hover:bg-brand-sand hover:text-brand',
+                    isActive ? 'bg-brand-sand/70 text-brand' : 'text-brand-muted',
                   ].join(' ')
                 }
               >

@@ -8,11 +8,14 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          dark: "#0f172a",
-          DEFAULT: "#0ea5e9",
-          light: "#38bdf8",
-          accent: "#f97316",
-          muted: "#94a3b8"
+          deep: "#2f0c0c",
+          DEFAULT: "#7b2d3a",
+          light: "#b54a5a",
+          sand: "#f4ede1",
+          cream: "#fbf6ee",
+          muted: "#b39a8f",
+          accent: "#e9c46a",
+          ink: "#1c1a1a"
         }
       },
       fontFamily: {
@@ -20,7 +23,8 @@ module.exports = {
         heading: ["'Poppins'", "'Inter'", "sans-serif"]
       },
       boxShadow: {
-        glow: "0 20px 40px -20px rgba(14, 165, 233, 0.45)"
+        glow: "0 24px 45px -20px rgba(123, 45, 58, 0.4)",
+        card: "0 18px 35px -25px rgba(31, 6, 8, 0.65)"
       }
     }
   },

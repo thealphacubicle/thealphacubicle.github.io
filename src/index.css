@@ -8,17 +8,17 @@
   }
 
   body {
-    @apply bg-slate-900 text-slate-100 font-sans antialiased;
+    @apply bg-brand-cream text-brand-ink font-sans antialiased;
   }
 
   ::selection {
-    @apply bg-brand/60 text-white;
+    @apply bg-brand/70 text-brand-cream;
   }
 }
 
 @layer components {
   .section-heading {
-    @apply text-3xl md:text-4xl font-heading font-semibold text-white tracking-tight;
+    @apply text-3xl md:text-4xl font-heading font-semibold text-brand-deep tracking-tight;
   }
 
   .section-subtitle {
