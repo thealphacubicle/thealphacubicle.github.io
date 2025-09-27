@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../components/Button';
+import InquiraWidget from '../components/InquiraWidget';
 
 const experience = [
   {
@@ -344,6 +345,7 @@ function Resume() {
           </div>
         </div>
       </section>
+      <InquiraWidget />
     </div>
   );
 }
