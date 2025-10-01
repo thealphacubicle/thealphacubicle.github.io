@@ -140,7 +140,7 @@ function Resume() {
                 social programs, public benefits, and community-first services.
               </p>
             </div>
-            <Button href="/resume.pdf" download variant="secondary" className="border-brand/40 bg-transparent text-brand-cream">
+            <Button href="/resume.pdf" download>
               Download PDF
             </Button>
           </div>

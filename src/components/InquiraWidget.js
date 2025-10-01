@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const CHAT_ENDPOINT = 'https://personalrag-production.up.railway.app/v1/chat';
+const CHAT_ENDPOINT = 'https://personalrag-production-eb99.up.railway.app/v1/chat';
 // For dev only: const CHAT_ENDPOINT = 'http://localhost:8000/v1/chat';
 
 const INITIAL_PROMPT = 'Hi, what would you like to learn about Srihari?';
@@ -108,7 +108,7 @@ function InquiraWidget() {
           Open Inquira
         </button>
       ) : (
-        <div className="w-[min(22rem,90vw)] overflow-hidden rounded-3xl border border-brand/25 bg-brand-cream shadow-2xl">
+        <div className="w-[min(26rem,90vw)] overflow-hidden rounded-3xl border border-brand/25 bg-brand-cream shadow-2xl">
           <header className="flex items-center justify-between bg-gradient-to-r from-brand-deep via-brand to-brand-deep px-4 py-3 text-brand-cream">
             <div>
               <p className="text-xs uppercase tracking-[0.3em] text-brand-muted">Inquira</p>
@@ -141,7 +141,7 @@ function InquiraWidget() {
             </div>
           </header>
 
-          <div className="flex max-h-[22rem] flex-col bg-brand-cream/90">
+          <div className="flex max-h-[26rem] flex-col bg-brand-cream/90">
             <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4 text-sm text-brand-ink">
               {messages.map((message) => (
                 <div
