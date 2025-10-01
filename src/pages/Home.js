@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Button from '../components/Button';
+import InquiraWidget from '../components/InquiraWidget';
 import Sparkline from '../components/Sparkline';
 
 const capabilityPills = [
@@ -381,7 +382,7 @@ function Home() {
               products that democratize access to public services and social support.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
-              <Button to="/resume">Open Impact Dossier</Button>
+              <Button to="/resume">Open Resume</Button>
               <Button href="mailto:thealphacubicle.dev@gmail.com" variant="secondary">
                 Collaborate with me
               </Button>
@@ -549,12 +550,11 @@ function Home() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button href="mailto:thealphacubicle.dev@gmail.com">Start a conversation</Button>
-            <Button to="/resume" variant="secondary" className="border-brand/40 bg-transparent text-brand-cream">
-              View Resume
-            </Button>
+            <Button to="/resume">View Resume</Button>
           </div>
         </div>
       </section>
+      <InquiraWidget />
     </div>
   );
 }
