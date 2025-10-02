@@ -383,7 +383,7 @@ function Home() {
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
               <Button to="/resume">Open Resume</Button>
-              <Button href="mailto:thealphacubicle.dev@gmail.com" variant="secondary">
+              <Button href="https://koalendar.com/e/discovery-call-with-srihari?month=2025-10&duration=30&date=2025-10-03" variant="secondary">
                 Collaborate with me
               </Button>
             </div>
@@ -549,7 +549,7 @@ function Home() {
             From hypothesis to deployed model, I help public-minded teams operationalize AI so insights land with the communities that need them most.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button href="mailto:thealphacubicle.dev@gmail.com">Start a conversation</Button>
+            <Button href="https://koalendar.com/e/discovery-call-with-srihari?month=2025-10&duration=30&date=2025-10-03">Start a conversation</Button>
             <Button to="/resume">View Resume</Button>
           </div>
         </div>

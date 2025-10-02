@@ -259,8 +259,8 @@ function Resume() {
                 <div>
                   <dt className="font-medium text-brand-deep">Email</dt>
                   <dd className="mt-1">
-                    <a className="text-brand hover:text-brand-light" href="mailto:srihari.raman@northeastern.edu">
-                      srihari.raman@northeastern.edu
+                    <a className="text-brand hover:text-brand-light" href="mailto:thealphacubicle.dev@gmail.com">
+                      thealphacubicle.dev@gmail.com
                     </a>
                   </dd>
                 </div>
@@ -295,9 +295,6 @@ function Resume() {
                 Independent initiatives exploring the edges of civic infrastructure, experimentation, and storytelling.
               </p>
             </div>
-            <Button variant="outline" href="mailto:srihari.raman@northeastern.edu" className="border-brand text-brand hover:text-brand-light">
-              Request a demo
-            </Button>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
@@ -338,8 +335,8 @@ function Resume() {
             Partnering with teams advancing social welfare tech. Reach out for deeper case studies or to co-create the next civic impact wave.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button href="mailto:srihari.raman@northeastern.edu">Schedule a chat</Button>
-            <Button to="/" variant="secondary" className="border-brand/40 bg-transparent text-brand-cream">
+            <Button href="https://koalendar.com/e/discovery-call-with-srihari?month=2025-10&duration=30&date=2025-10-03">Schedule a chat</Button>
+            <Button to="/">
               Return home
             </Button>
           </div>
