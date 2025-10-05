@@ -15,6 +15,18 @@ const experience = [
     ]
   },
   {
+    role: 'Undergraduate Peer Tutor',
+    company: 'Northeastern University',
+    location: 'Boston, MA',
+    period: 'Sep 2023 – Present',
+    achievements: [
+      'Tutored over 65 students in Data Science Fundamentals, Advanced Database Systems, and Business Statistics.',
+      'Completed over 190 hours of tutoring, providing personalized support and helping students achieve thorough understanding of concepts.',
+      'Currently mentoring a cohort of 5+ peer tutors to enhance communication between university administrators and peer tutors.',
+      'Completed a CRLA L1 Peer Tutoring Certification, showcasing strong communication and teaching skills.'
+    ]
+  },
+  {
     role: 'R&D Data Science Co-Op',
     company: 'Procter & Gamble (Gillette)',
     location: 'Boston, MA',

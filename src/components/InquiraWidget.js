@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 const CHAT_ENDPOINT = 'https://personalrag-production-eb99.up.railway.app/v1/chat';
 // For dev only: const CHAT_ENDPOINT = 'http://localhost:8000/v1/chat';
 
-const INITIAL_PROMPT = 'Hi, what would you like to learn about Srihari?';
+const INITIAL_PROMPT = 'Hi, this is Inquira. What would you like to learn about Srihari? You can ask about projects, roles, skills, etc.';
 const APPEAR_DELAY_MS = 2000;
 
 function InquiraWidget() {

@@ -9,7 +9,7 @@ function Footer() {
         <div>
           <h3 className="text-lg font-semibold">Srihari Raman</h3>
           <p className="mt-3 text-sm text-brand-cream/80">
-            Building civic-first AI, crypto, and digital infrastructure so public services feel modern, fast, and human.
+            Building civic-first AI and digital infrastructure so public services feel modern, fast, and connected.
           </p>
         </div>
         <div>

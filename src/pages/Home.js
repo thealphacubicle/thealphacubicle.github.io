@@ -5,29 +5,23 @@ import Sparkline from '../components/Sparkline';
 
 const capabilityPills = [
   'Prompt Engineering Systems',
-  'Microservices & API Mesh',
-  'Civic Data Platform Architecture',
-  'Multi-agent Orchestration',
+  'Microservices & API Design',
+  'Multi-Agent Orchestration',
   'Responsible AI Ops',
-  'Scalable Experimentation'
 ];
 
 const interests = [
   {
     title: 'LLM Safety & Guardrails',
-    caption: 'Designing redaction, policy tuning, and community feedback loops for equitable civic copilots.'
+    caption: 'Designing redaction, policy tuning, and community feedback loops for an AI Firewall product.'
   },
   {
-    title: 'GovTech Multi-Agent Studio',
-    caption: 'Building cooperative agents that accelerate public benefits tooling and unlock faster service delivery.'
+    title: 'Multi-Agents in GovTech Systems',
+    caption: 'Building cooperative LLM agents that accelerate public benefits tooling and unlock faster service delivery.'
   },
   {
-    title: 'Observability for ML',
-    caption: 'Surfacing drift, bias, and SLA breaches with intuitive dashboards that engineers actually use.'
-  },
-  {
-    title: 'EquityChain Homebuying Pilot',
-    caption: 'Exploring blockchain + AI handoffs to streamline affordable housing approvals without compromising privacy.'
+    title: 'Equitable Homebuying',
+    caption: 'Exploring blockchain + AI integrations in real estate to streamline the homebuying process without compromising privacy.'
   }
 ];
 
@@ -45,7 +39,7 @@ const projects = [
     title: "BlockchainViz: Bitcoin's Live Profitability Lens",
     description:
       'Streaming pipeline and Tableau surface that ingests >450 batches of blockchain data to highlight miner profitability.',
-    tags: ['Kafka', 'MongoDB', 'Tableau', 'Python'],
+    tags: ['MongoDB', 'Tableau', 'Python'],
     links: [
       { label: 'GitHub', href: 'https://github.com/thealphacubicle/Amtrak-Review-Analysis' },
       { label: 'Medium', href: 'https://medium.com/@srihari.raman/a-real-time-discovery-of-bitcoin-through-tableau-345c94681cc1' }
@@ -64,13 +58,13 @@ const projects = [
 
 const pipelines = [
   {
-    name: 'Azure LLM Firewall',
-    status: 'Live',
-    highlight: '80% faster PII redaction',
-    description: 'Async NLP inference and rule authoring system deployed for Fyras Solutions firewall MVP.'
+    name: 'Fyras Solutions LLM Firewall',
+    status: 'In Development',
+    highlight: 'Customizable enterprise-grade PII moderation and policy tuning',
+    description: 'Async NLP inference and rule authoring system in development for Fyras Solutions firewall MVP.'
   },
   {
-    name: 'Databricks Reliability Suite',
+    name: 'Gillette Databricks IoT Integration',
     status: 'Shipped',
     highlight: '95% efficiency gain',
     description: 'Delta Live Tables pipelines and quality checks powering Gillette embedded systems analytics.'
@@ -79,35 +73,35 @@ const pipelines = [
     name: 'Patent Intelligence Lab',
     status: 'In Research',
     highlight: '7M+ documents parsed',
-    description: 'Parallelized BERT transformers uncovering commercialization themes for Northeastern University.'
+    description: 'Parallelized BERT transformers uncovering hidden patent themes for Prof. Anand Venkateswaran'
   }
 ];
 
 const DEFAULT_SNAPSHOT = [
   {
     key: 'pushes',
-    label: 'Push Bursts',
+    label: 'Pushes',
     value: '—',
     delta: 'awaiting signal',
     points: [1, 2, 3, 2, 4, 5]
   },
   {
     key: 'pullRequests',
-    label: 'PR Launches',
+    label: 'PRs',
     value: '—',
     delta: 'sync required',
     points: [2, 1, 3, 2, 4, 3]
   },
   {
     key: 'merges',
-    label: 'Merge Wins',
+    label: 'Merges',
     value: '—',
     delta: 'sync required',
     points: [0, 1, 1, 2, 2, 3]
   },
   {
     key: 'reviews',
-    label: 'Review Boosts',
+    label: 'Reviews',
     value: '—',
     delta: 'sync required',
     points: [1, 2, 2, 3, 4, 5]
@@ -375,7 +369,7 @@ function Home() {
               Impact Builder
             </span>
             <h1 className="mt-6 text-4xl font-heading font-semibold tracking-tight text-brand-deep sm:text-5xl lg:text-[52px]">
-              Srihari Raman · Impact AI Maker
+              Srihari Raman · Impact AI Builder
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-brand-ink/80">
               Northeastern University Data Science &amp; Finance student architecting civic-facing AI, microservices, and digital
@@ -400,7 +394,7 @@ function Home() {
                 </div>
                 <span className="text-[10px] uppercase tracking-wide text-brand-muted">Updated {lastUpdated}</span>
               </div>
-              <p className="mt-3 text-lg font-semibold">ImpactOps Pulse</p>
+              <p className="mt-3 text-lg font-semibold">Development Impact</p>
               <div className="mt-6 space-y-6">
                 {snapshot.map((metric) => (
                   <div key={metric.key} className="rounded-xl bg-brand-cream/10 p-4">
@@ -426,7 +420,7 @@ function Home() {
             <div>
               <h2 className="section-heading">Capabilities</h2>
               <p className="mt-4 text-base text-brand-ink/70">
-                I design modular civic-tech ecosystems—microservices, agents, and AI guardrails—that let public orgs ship
+                I design modular civic-tech ecosystems—microservices, agents, and AI guardrails—that let public and private organizations ship
                 trustworthy digital services at community speed.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
@@ -470,7 +464,7 @@ function Home() {
           <div className="flex-1">
             <h2 className="section-heading text-brand-cream">Selected Projects</h2>
             <p className="mt-2 max-w-xl text-base text-brand-cream/80">
-              High-impact systems and explorations keeping AI, finance, and social good in the same conversation.
+              High-impact systems and explorations keeping AI and social good in the same conversation.
             </p>
             <div className="mt-10 grid gap-6">
               {projects.map((project) => (
@@ -515,7 +509,7 @@ function Home() {
             <div>
               <h2 className="section-heading">Platforms &amp; Pipelines</h2>
               <p className="section-subtitle mt-2 max-w-2xl">
-                A systems view of initiatives I lead—from Azure-native LLM safety to blockchain-assisted housing journeys.
+                A systems view of initiatives I lead—from Azure-native LLM moderation to blockchain-assisted housing journeys.
               </p>
             </div>
             <Button variant="outline" href="https://www.linkedin.com/in/srihari-r-006034176/" className="border-brand text-brand hover:text-brand-light">
@@ -544,7 +538,7 @@ function Home() {
 
       <section className="border-t border-brand/15 bg-brand-deep text-brand-cream">
         <div className="mx-auto max-w-5xl px-6 py-16 text-center">
-          <h2 className="section-heading text-brand-cream">Let’s launch the next civic impact wave.</h2>
+          <h2 className="section-heading text-brand-cream">Let’s launch the next digital wave for good.</h2>
           <p className="mt-4 text-base text-brand-cream/80">
             From hypothesis to deployed model, I help public-minded teams operationalize AI so insights land with the communities that need them most.
           </p>
