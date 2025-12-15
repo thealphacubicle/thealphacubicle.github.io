@@ -4,24 +4,24 @@ import InquiraWidget from '../components/InquiraWidget';
 import Sparkline from '../components/Sparkline';
 
 const capabilityPills = [
-  'Prompt Engineering Systems',
-  'Microservices & API Design',
+  'LLM Integration & Fine-tuning',
+  'RAG Pipeline Architecture',
   'Multi-Agent Orchestration',
-  'Responsible AI Ops',
+  'Production AI Deployment',
 ];
 
 const interests = [
   {
     title: 'LLM Safety & Guardrails',
-    caption: 'Designing redaction, policy tuning, and community feedback loops for an AI Firewall product.'
+    caption: 'Designing redaction, policy tuning, and feedback loops for enterprise AI Firewall systems.'
   },
   {
-    title: 'Multi-Agents in GovTech Systems',
-    caption: 'Building cooperative LLM agents that accelerate public benefits tooling and unlock faster service delivery.'
+    title: 'Multi-Agent Systems',
+    caption: 'Building cooperative LLM agents that orchestrate complex workflows and automate business processes.'
   },
   {
-    title: 'Equitable Homebuying',
-    caption: 'Exploring blockchain + AI integrations in real estate to streamline the homebuying process without compromising privacy.'
+    title: 'Production AI Infrastructure',
+    caption: 'Architecting scalable AI systems with robust monitoring, deployment pipelines, and operational excellence.'
   }
 ];
 
@@ -366,19 +366,18 @@ function Home() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
               </span>
-              Impact Builder
+              AI Engineer & Consultant
             </span>
             <h1 className="mt-6 text-4xl font-heading font-semibold tracking-tight text-brand-deep sm:text-5xl lg:text-[52px]">
-              Srihari Raman · Impact AI Builder
+              Srihari Raman · AI Engineer & Implementation Consultant
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-brand-ink/80">
-              Northeastern University Data Science &amp; Finance student architecting civic-facing AI, microservices, and digital
-              products that democratize access to public services and social support.
+              I design, build, and deploy production-ready AI systems. From LLM integration to multi-agent orchestration, I help organizations transform their business with AI that delivers measurable results.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
-              <Button to="/resume">Open Resume</Button>
+              <Button to="/consulting">Consulting Services</Button>
               <Button href="https://koalendar.com/e/discovery-call-with-srihari?month=2025-10&duration=30&date=2025-10-03" variant="secondary">
-                Collaborate with me
+                Schedule a Call
               </Button>
             </div>
           </div>
@@ -420,8 +419,7 @@ function Home() {
             <div>
               <h2 className="section-heading">Capabilities</h2>
               <p className="mt-4 text-base text-brand-ink/70">
-                I design modular civic-tech ecosystems—microservices, agents, and AI guardrails—that let public and private organizations ship
-                trustworthy digital services at community speed.
+                I architect production-ready AI systems—from LLM integration to multi-agent orchestration—that help organizations deploy scalable, reliable AI solutions that drive business value.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 {capabilityPills.map((skill) => (
@@ -464,7 +462,7 @@ function Home() {
           <div className="flex-1">
             <h2 className="section-heading text-brand-cream">Selected Projects</h2>
             <p className="mt-2 max-w-xl text-base text-brand-cream/80">
-              High-impact systems and explorations keeping AI and social good in the same conversation.
+              Production AI systems and frameworks demonstrating real-world implementation expertise across LLMs, RAG, and enterprise AI infrastructure.
             </p>
             <div className="mt-10 grid gap-6">
               {projects.map((project) => (
@@ -509,7 +507,7 @@ function Home() {
             <div>
               <h2 className="section-heading">Platforms &amp; Pipelines</h2>
               <p className="section-subtitle mt-2 max-w-2xl">
-                A systems view of initiatives I lead—from Azure-native LLM moderation to blockchain-assisted housing journeys.
+                Production AI systems and data platforms I've built—from enterprise LLM firewalls to scalable analytics pipelines.
               </p>
             </div>
             <Button variant="outline" href="https://www.linkedin.com/in/srihari-r-006034176/" className="border-brand text-brand hover:text-brand-light">
@@ -538,13 +536,13 @@ function Home() {
 
       <section className="border-t border-brand/15 bg-brand-deep text-brand-cream">
         <div className="mx-auto max-w-5xl px-6 py-16 text-center">
-          <h2 className="section-heading text-brand-cream">Let’s launch the next digital wave for good.</h2>
+          <h2 className="section-heading text-brand-cream">Ready to build your AI solution?</h2>
           <p className="mt-4 text-base text-brand-cream/80">
-            From hypothesis to deployed model, I help public-minded teams operationalize AI so insights land with the communities that need them most.
+            From strategy to production deployment, I help organizations implement AI systems that deliver measurable business impact. Let's discuss your AI needs.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button href="https://koalendar.com/e/discovery-call-with-srihari?month=2025-10&duration=30&date=2025-10-03">Start a conversation</Button>
-            <Button to="/resume">View Resume</Button>
+            <Button href="https://koalendar.com/e/discovery-call-with-srihari?month=2025-10&duration=30&date=2025-10-03">Schedule a Consultation</Button>
+            <Button to="/consulting">Learn About Services</Button>
           </div>
         </div>
       </section>

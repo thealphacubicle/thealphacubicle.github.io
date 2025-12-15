@@ -148,8 +148,7 @@ function Resume() {
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-brand-muted">Resume</p>
               <h1 className="mt-3 text-4xl font-heading font-semibold text-brand-cream">Srihari Raman</h1>
               <p className="mt-4 max-w-xl text-base text-brand-cream/80">
-                Civic technologist blending data science, blockchain, and microservice architecture to deploy AI that uplifts
-                social programs, public benefits, and community-first services.
+                AI Engineer and Implementation Consultant specializing in LLM integration, RAG systems, and production AI infrastructure. I design and deploy scalable AI solutions that drive business value.
               </p>
             </div>
             <Button href="/resume.pdf" download>
@@ -162,7 +161,7 @@ function Resume() {
       <section className="border-b border-brand/10 bg-brand-cream/95">
         <div className="mx-auto max-w-5xl px-6 py-16">
           <h2 className="section-heading">Technical Skills</h2>
-          <p className="section-subtitle mt-2">Tooling, languages, and certifications powering equitable AI and digital service delivery.</p>
+          <p className="section-subtitle mt-2">Tooling, languages, and certifications powering production AI systems and enterprise implementations.</p>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             <div className="rounded-3xl border border-brand/15 bg-white/80 p-6 shadow-lg">
               <p className="text-sm font-semibold uppercase tracking-wide text-brand-muted">Languages</p>
@@ -197,7 +196,7 @@ function Resume() {
       <section className="border-b border-brand/10 bg-brand-cream/95">
         <div className="mx-auto max-w-5xl px-6 py-16">
           <h2 className="section-heading">Experience</h2>
-          <p className="section-subtitle mt-2">Delivering responsible AI, data platforms, and experimentation engines for public good initiatives.</p>
+          <p className="section-subtitle mt-2">Building production AI systems, enterprise LLM solutions, and scalable data platforms for business impact.</p>
           <div className="mt-10 space-y-10">
             {experience.map((role) => (
               <article
@@ -278,7 +277,7 @@ function Resume() {
                 </div>
                 <div>
                   <dt className="font-medium text-brand-deep">Focus</dt>
-                  <dd className="mt-1 text-brand-muted">Civic AI · Social Impact Microservices · Responsible Experimentation</dd>
+                  <dd className="mt-1 text-brand-muted">AI Engineering · LLM Implementation · Production AI Systems · Enterprise AI Consulting</dd>
                 </div>
                 <div>
                   <dt className="font-medium text-brand-deep">Links</dt>
@@ -304,7 +303,7 @@ function Resume() {
             <div>
               <h2 className="section-heading">Select Projects</h2>
               <p className="section-subtitle mt-2">
-                Independent initiatives exploring the edges of civic infrastructure, experimentation, and storytelling.
+                Production AI systems and frameworks demonstrating expertise in LLM integration, RAG architecture, and enterprise AI implementation.
               </p>
             </div>
           </div>
@@ -342,15 +341,13 @@ function Resume() {
 
       <section className="bg-brand-deep text-brand-cream">
         <div className="mx-auto max-w-4xl px-6 py-16 text-center">
-          <h2 className="section-heading text-brand-cream">References available upon request</h2>
+          <h2 className="section-heading text-brand-cream">Ready to build your AI solution?</h2>
           <p className="mt-4 text-base text-brand-cream/80">
-            Partnering with teams advancing social welfare tech. Reach out for deeper case studies or to co-create the next civic impact wave.
+            Let's discuss how I can help implement AI systems for your organization. References and case studies available upon request.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button href="https://koalendar.com/e/discovery-call-with-srihari?month=2025-10&duration=30&date=2025-10-03">Schedule a chat</Button>
-            <Button to="/">
-              Return home
-            </Button>
+            <Button href="https://koalendar.com/e/discovery-call-with-srihari?month=2025-10&duration=30&date=2025-10-03">Schedule a Consultation</Button>
+            <Button to="/consulting">View Consulting Services</Button>
           </div>
         </div>
       </section>

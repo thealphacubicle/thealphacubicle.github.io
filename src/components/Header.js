@@ -4,6 +4,7 @@ import Button from './Button';
 
 const navigation = [
   { name: 'Home', to: '/' },
+  { name: 'Consulting', to: '/consulting' },
   { name: 'Resume', to: '/resume' },
 ];
 
@@ -25,7 +26,7 @@ function Header() {
           {/* Replace the text below with your personal branding */}
           <span className="rounded-full bg-brand-sand px-3 py-1 text-brand">Srihari Raman</span>
           <span className="hidden text-xs font-medium uppercase tracking-[0.35em] text-brand-muted sm:inline">
-            Impact AI Builder
+            AI Engineer & Consultant
           </span>
         </Link>
         <nav className="hidden items-center gap-8 text-sm font-medium text-brand-muted md:flex">
