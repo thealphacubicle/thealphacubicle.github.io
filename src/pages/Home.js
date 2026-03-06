@@ -36,13 +36,12 @@ const projects = [
     ]
   },
   {
-    title: "BlockchainViz: Bitcoin's Live Profitability Lens",
+    title: 'OpenContext: Production MCP for Government OpenData',
     description:
-      'Streaming pipeline and Tableau surface that ingests >450 batches of blockchain data to highlight miner profitability.',
-    tags: ['MongoDB', 'Tableau', 'Python'],
+      'Template-style platform enabling city entities and governments to deploy production-grade MCP solutions for their OpenData portals.',
+    tags: ['MCP', 'AWS Bedrock', 'Claude', 'Multi-Agent AI'],
     links: [
-      { label: 'GitHub', href: 'https://github.com/thealphacubicle/Amtrak-Review-Analysis' },
-      { label: 'Medium', href: 'https://medium.com/@srihari.raman/a-real-time-discovery-of-bitcoin-through-tableau-345c94681cc1' }
+      { label: 'View Project', href: 'https://thealphacubicle.dev/OpenContext-Site/' }
     ]
   },
   {
@@ -58,8 +57,15 @@ const projects = [
 
 const pipelines = [
   {
+    name: 'OpenContext',
+    status: 'In Production',
+    highlight: 'Production-grade MCP for government OpenData',
+    description: 'Template-style platform enabling city entities and governments to deploy production-grade MCP solutions for their OpenData portals.',
+    href: 'https://thealphacubicle.dev/OpenContext-Site/'
+  },
+  {
     name: 'Fyras Solutions LLM Firewall',
-    status: 'In Development',
+    status: 'Handed Off',
     highlight: 'Customizable enterprise-grade PII moderation and policy tuning',
     description: 'Async NLP inference and rule authoring system in development for Fyras Solutions firewall MVP.'
   },
@@ -68,12 +74,6 @@ const pipelines = [
     status: 'Shipped',
     highlight: '95% efficiency gain',
     description: 'Delta Live Tables pipelines and quality checks powering Gillette embedded systems analytics.'
-  },
-  {
-    name: 'Patent Intelligence Lab',
-    status: 'In Research',
-    highlight: '7M+ documents parsed',
-    description: 'Parallelized BERT transformers uncovering hidden patent themes for Prof. Anand Venkateswaran'
   }
 ];
 
@@ -528,6 +528,16 @@ function Home() {
                 </div>
                 <p className="mt-4 text-lg font-semibold text-brand-deep">{pipeline.highlight}</p>
                 <p className="mt-3 text-sm text-brand-ink/70">{pipeline.description}</p>
+                {pipeline.href && (
+                  <a
+                    href={pipeline.href}
+                    className="mt-4 inline-block rounded-full border border-brand/20 bg-brand-sand px-3 py-1 text-xs uppercase tracking-wide text-brand-deep transition hover:border-brand hover:text-brand"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Project →
+                  </a>
+                )}
               </article>
             ))}
           </div>

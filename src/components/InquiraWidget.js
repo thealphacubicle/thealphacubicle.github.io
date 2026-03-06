@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const CHAT_ENDPOINT = 'https://personalrag-production-eb99.up.railway.app/v1/chat';
+const CHAT_ENDPOINT = 'https://personalrag-production.up.railway.app/v1/chat';
 // For dev only: const CHAT_ENDPOINT = 'http://localhost:8000/v1/chat';
 
 const INITIAL_PROMPT = 'Hi, this is Inquira. What would you like to learn about Srihari? You can ask about projects, roles, skills, etc.';
 const APPEAR_DELAY_MS = 2000;
+
+// Generate a unique session ID
+const generateSessionId = () => {
+  return `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+};
 
 function InquiraWidget() {
   const [isVisible, setIsVisible] = useState(false);
@@ -16,6 +21,7 @@ function InquiraWidget() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const endOfMessagesRef = useRef(null);
+  const sessionIdRef = useRef(generateSessionId());
 
   useEffect(() => {
     const timer = window.setTimeout(() => setIsVisible(true), APPEAR_DELAY_MS);
@@ -57,7 +63,7 @@ function InquiraWidget() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           query: trimmed,
-          // history: nextMessages.map(({ role, content }) => ({ role, content }))
+          session_id: sessionIdRef.current
         })
       });
 

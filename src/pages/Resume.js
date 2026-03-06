@@ -4,10 +4,21 @@ import InquiraWidget from '../components/InquiraWidget';
 
 const experience = [
   {
-    role: 'Software Engineering Intern',
+    role: 'AI Engineer',
+    company: 'Burnes Center of Social Change',
+    location: 'Boston, MA',
+    period: 'Sep 2025 – Present',
+    achievements: [
+      'Built OpenContext, a template-style platform enabling city entities and governments to deploy production-grade MCP solutions for their OpenData portals, integrating 200+ municipal datasets for real-time AI agent access.',
+      'Architected multi-agent AI system utilizing Claude Sonnet 4 on top of OpenContext to automate process improvement workflows for Boston city employees, enabling autonomous data retrieval and analysis.',
+      'Deployed scalable cloud infrastructure using AWS Bedrock, Lambda, API Gateway, and CDK for Infrastructure as Code, ensuring reliable system performance for city department stakeholders.'
+    ]
+  },
+  {
+    role: 'Part-Time Technical Director',
     company: 'Fyras Solutions',
     location: 'Seattle, WA',
-    period: 'Apr 2025 – Present',
+    period: 'Apr 2025 – Dec 2025',
     achievements: [
       'Architected AI content moderation service for an MVP firewall product to protect digital community spaces, reducing PII redaction time by 80% via async NLP inference models.',
       'Engineered Azure-based client authorization system that improved scalability and auditing coverage by 75% for accountable civic deployments.',
@@ -78,6 +89,10 @@ const skills = {
   languages: ['Python', 'SQL (Spark SQL, RediSQL, MQL)', 'Java', 'HTML', 'CSS', 'Solidity'],
   technologies: [
     'AWS',
+    'AWS Bedrock',
+    'AWS Lambda',
+    'API Gateway',
+    'AWS CDK',
     'Microsoft Azure',
     'Databricks',
     'Apache Spark',
@@ -87,6 +102,8 @@ const skills = {
     'MongoDB',
     'scikit-learn',
     'Hugging Face',
+    'Claude (Anthropic)',
+    'Model Context Protocol (MCP)',
     'Tableau',
     'Jira',
     'JMP Statistics',
@@ -109,15 +126,14 @@ const projects = [
     ]
   },
   {
-    name: 'BlockchainViz: Real-Time Dashboarding on Bitcoin’s Network',
+    name: 'OpenContext: Production MCP for Government OpenData',
     links: [
-      { label: 'GitHub', href: 'https://github.com/thealphacubicle/Amtrak-Review-Analysis' },
-      { label: 'Medium', href: 'https://medium.com/@srihari.raman/a-real-time-discovery-of-bitcoin-through-tableau-345c94681cc1' }
+      { label: 'View Project', href: 'https://thealphacubicle.dev/OpenContext-Site/' }
     ],
-    timeline: 'Feb 2024 – Jun 2024',
+    timeline: 'Sep 2025 – Present',
     highlights: [
-      'Built end-to-end data pipeline handling 450+ batches of Bitcoin blockchain data to improve transparency in decentralized finance.',
-      'Developed Tableau dashboard querying 5,000+ MongoDB records in real time to surface equitable profitability insights for independent miners.'
+      'Built a template-style platform enabling city entities and governments to deploy production-grade MCP solutions for their OpenData portals.',
+      'Integrated 200+ municipal datasets via custom MCP servers, enabling real-time AI agent access to city operations data for policy analysis and process improvement.'
     ]
   },
   {

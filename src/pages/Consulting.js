@@ -37,11 +37,11 @@ const services = [
 const expertise = [
   {
     category: 'AI/ML Technologies',
-    items: ['LLMs & Prompt Engineering', 'RAG Systems', 'Multi-Agent Orchestration', 'Fine-tuning & Transfer Learning', 'NLP & Text Analysis', 'Computer Vision']
+    items: ['LLMs & Prompt Engineering', 'Claude (Anthropic)', 'RAG Systems', 'Multi-Agent Orchestration', 'Model Context Protocol (MCP)', 'Fine-tuning & Transfer Learning', 'NLP & Text Analysis', 'Computer Vision']
   },
   {
     category: 'Infrastructure & Platforms',
-    items: ['AWS', 'Microsoft Azure', 'Databricks', 'Apache Spark', 'Docker & Kubernetes', 'MLflow', 'Hugging Face']
+    items: ['AWS', 'AWS Bedrock', 'AWS Lambda', 'API Gateway', 'AWS CDK', 'Microsoft Azure', 'Databricks', 'Apache Spark', 'Docker & Kubernetes', 'MLflow', 'Hugging Face']
   },
   {
     category: 'Languages & Frameworks',
@@ -81,11 +81,12 @@ const caseStudies = [
     technologies: ['Azure', 'Python', 'NLP', 'Microservices']
   },
   {
-    title: 'Launchpad 2.0',
-    client: 'City of Boston',
-    challenge: 'Create a scalable solution that catered helps city staff complete process improvement projects faster',
-    solution: 'Built an full-stack AI-based process improvement website that helps city staff complete process improvement projects faster',
-    technologies: ['AI', 'Process Improvement', 'Government Tech', 'Scalable Solutions']
+    title: 'OpenContext',
+    client: 'Burnes Center of Social Change (City of Boston)',
+    challenge: 'Give city entities and governments a repeatable, production-ready way to expose their OpenData portals to AI agents via MCP',
+    solution: 'Built OpenContext, a template-style platform that packages MCP server infrastructure for OpenData portals, deployed on AWS Bedrock with Lambda and API Gateway using CDK for Infrastructure as Code.',
+    technologies: ['AWS Bedrock', 'Claude Sonnet 4', 'MCP', 'AWS Lambda', 'API Gateway', 'AWS CDK', 'Multi-Agent AI'],
+    href: 'https://thealphacubicle.dev/OpenContext-Site/'
   }
 ];
 
@@ -219,6 +220,16 @@ function Consulting() {
                     </span>
                   ))}
                 </div>
+                {study.href && (
+                  <a
+                    href={study.href}
+                    className="mt-4 inline-block rounded-full border border-brand/30 bg-brand-cream/15 px-3 py-1 text-xs uppercase tracking-wide text-brand-cream transition hover:border-brand hover:text-brand"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Project →
+                  </a>
+                )}
               </article>
             ))}
           </div>
