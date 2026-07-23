@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Button from '../components/Button';
-import InquiraWidget from '../components/InquiraWidget';
 import Sparkline from '../components/Sparkline';
 
 const capabilityPills = [
@@ -556,7 +555,6 @@ function Home() {
           </div>
         </div>
       </section>
-      <InquiraWidget />
     </div>
   );
 }

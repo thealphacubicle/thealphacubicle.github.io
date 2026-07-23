@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '../components/Button';
-import InquiraWidget from '../components/InquiraWidget';
 
 const services = [
   {
@@ -252,7 +251,6 @@ function Consulting() {
           </div>
         </div>
       </section>
-      <InquiraWidget />
     </div>
   );
 }
