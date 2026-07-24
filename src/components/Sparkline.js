@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Sparkline({ points, stroke = '#7b2d3a', fill = 'rgba(123, 45, 58, 0.12)', width = 120, height = 48 }) {
+function Sparkline({ points, stroke = '#71717A', fill = 'transparent', width = 120, height = 48 }) {
   if (!points || points.length < 2) {
     return null;
   }
@@ -27,7 +27,7 @@ function Sparkline({ points, stroke = '#7b2d3a', fill = 'rgba(123, 45, 58, 0.12)
         points={coordinates}
         fill="none"
         stroke={stroke}
-        strokeWidth={2.5}
+        strokeWidth={1.5}
         strokeLinecap="round"
         strokeLinejoin="round"
       />

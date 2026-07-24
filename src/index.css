@@ -8,20 +8,41 @@
   }
 
   body {
-    @apply bg-brand-cream text-brand-ink font-sans antialiased;
+    /* Warm off-white page — softer than pure white, less clinical. */
+    @apply bg-[#FDFCFA] text-ink-700 font-sans antialiased dark:bg-ink-black dark:text-ink-300;
   }
 
   ::selection {
-    @apply bg-brand/70 text-brand-cream;
+    @apply bg-ink-900 text-white dark:bg-white dark:text-ink-black;
   }
 }
 
 @layer components {
+  /* Monospace section label — the one place personality shows through. */
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.2em] text-ink-500;
+  }
+
+  /* Hierarchy from size/line-height — never weight. */
   .section-heading {
-    @apply text-3xl md:text-4xl font-heading font-semibold text-brand-deep tracking-tight;
+    @apply text-3xl md:text-4xl font-medium tracking-tight leading-tight text-ink-black dark:text-white;
   }
 
   .section-subtitle {
-    @apply text-base text-brand-muted;
+    @apply text-base leading-relaxed text-ink-500;
+  }
+
+  /* Flat card: 1px border, sharp corners, no shadow. Hover shifts border only. */
+  .card {
+    @apply rounded border border-ink-300 bg-white transition-colors duration-200 dark:border-ink-700 dark:bg-ink-900;
+  }
+
+  .card-hover {
+    @apply hover:border-ink-700 dark:hover:border-ink-300;
+  }
+
+  /* Square, bordered monospace tag — replaces rounded pill badges. */
+  .tag {
+    @apply inline-flex items-center rounded-none border border-ink-300 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider text-ink-500 dark:border-ink-700 dark:text-ink-500;
   }
 }

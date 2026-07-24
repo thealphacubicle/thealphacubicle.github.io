@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import Button from '../components/Button';
-import Sparkline from '../components/Sparkline';
 
-const capabilityPills = [
+const capabilities = [
   'LLM Integration & Fine-tuning',
   'RAG Pipeline Architecture',
   'Multi-Agent Orchestration',
@@ -12,15 +11,15 @@ const capabilityPills = [
 const interests = [
   {
     title: 'LLM Safety & Guardrails',
-    caption: 'Designing redaction, policy tuning, and feedback loops for enterprise AI Firewall systems.'
+    caption: 'Redaction, policy tuning, and feedback loops for enterprise AI firewall systems.'
   },
   {
     title: 'Multi-Agent Systems',
-    caption: 'Building cooperative LLM agents that orchestrate complex workflows and automate business processes.'
+    caption: 'Cooperative LLM agents that orchestrate multi-step workflows and automate operational processes.'
   },
   {
     title: 'Production AI Infrastructure',
-    caption: 'Architecting scalable AI systems with robust monitoring, deployment pipelines, and operational excellence.'
+    caption: 'The monitoring, deployment pipelines, and tooling that keep AI systems running once they leave the notebook.'
   }
 ];
 
@@ -28,7 +27,7 @@ const projects = [
   {
     title: 'ClassRAG: Experiment-Based RAG Pipeline System',
     description:
-      'Modular RAG framework that orchestrates 480+ automated experiments to recommend architecture pairings by query intent.',
+      'Modular RAG framework that runs 480+ automated experiments to recommend architecture pairings by query intent.',
     tags: ['LangChain', 'Hugging Face', 'Redis', 'FastAPI'],
     links: [
       { label: 'GitHub', href: 'https://github.com/thealphacubicle/ClassRAG' }
@@ -37,7 +36,7 @@ const projects = [
   {
     title: 'OpenContext: Production MCP for Government OpenData',
     description:
-      'Template-style platform enabling city entities and governments to deploy production-grade MCP solutions for their OpenData portals.',
+      'Template-style platform that lets city entities and governments deploy production MCP servers for their OpenData portals.',
     tags: ['MCP', 'AWS Bedrock', 'Claude', 'Multi-Agent AI'],
     links: [
       { label: 'View Project', href: 'https://thealphacubicle.dev/OpenContext-Site/' }
@@ -46,7 +45,7 @@ const projects = [
   {
     title: 'Linguisight: NLP Analysis Framework',
     description:
-      'Three-tier NLP toolkit that lets business teams explore 7M+ patents through topic clustering, embeddings, and storytelling.',
+      'Three-tier NLP toolkit that lets teams explore 7M+ patents through topic clustering, embeddings, and narrative reporting.',
     tags: ['PyTorch', 'BERT', 'Azure', 'Dash'],
     links: [
       { label: 'GitHub', href: 'https://github.com/thealphacubicle/Linguisight' }
@@ -58,479 +57,150 @@ const pipelines = [
   {
     name: 'OpenContext',
     status: 'In Production',
-    highlight: 'Production-grade MCP for government OpenData',
-    description: 'Template-style platform enabling city entities and governments to deploy production-grade MCP solutions for their OpenData portals.',
+    highlight: 'Production MCP for government OpenData',
+    description: 'Template-style platform that packages MCP server infrastructure for municipal OpenData portals.',
     href: 'https://thealphacubicle.dev/OpenContext-Site/'
   },
   {
     name: 'Fyras Solutions LLM Firewall',
     status: 'Handed Off',
-    highlight: 'Customizable enterprise-grade PII moderation and policy tuning',
-    description: 'Async NLP inference and rule authoring system in development for Fyras Solutions firewall MVP.'
+    highlight: 'Enterprise PII moderation and policy tuning',
+    description: 'Async NLP inference and rule-authoring system built for the Fyras Solutions firewall MVP.'
   },
   {
     name: 'Gillette Databricks IoT Integration',
     status: 'Shipped',
-    highlight: '95% efficiency gain',
-    description: 'Delta Live Tables pipelines and quality checks powering Gillette embedded systems analytics.'
+    highlight: '95% processing-efficiency gain',
+    description: 'Delta Live Tables pipelines and quality checks powering Gillette embedded-systems analytics.'
   }
 ];
-
-const DEFAULT_SNAPSHOT = [
-  {
-    key: 'pushes',
-    label: 'Pushes',
-    value: '—',
-    delta: 'awaiting signal',
-    points: [1, 2, 3, 2, 4, 5]
-  },
-  {
-    key: 'pullRequests',
-    label: 'PRs',
-    value: '—',
-    delta: 'sync required',
-    points: [2, 1, 3, 2, 4, 3]
-  },
-  {
-    key: 'merges',
-    label: 'Merges',
-    value: '—',
-    delta: 'sync required',
-    points: [0, 1, 1, 2, 2, 3]
-  },
-  {
-    key: 'reviews',
-    label: 'Reviews',
-    value: '—',
-    delta: 'sync required',
-    points: [1, 2, 2, 3, 4, 5]
-  }
-];
-
-const CUSTOM_SNAPSHOT_ENDPOINT = process.env.REACT_APP_GITHUB_METRICS_ENDPOINT;
-const GITHUB_USERNAME = process.env.REACT_APP_GITHUB_USERNAME || 'thealphacubicle';
-const SNAPSHOT_DEFAULT_LOOKUP = DEFAULT_SNAPSHOT.reduce((acc, metric) => {
-  acc[metric.key] = metric;
-  return acc;
-}, {});
-
-const formatNumber = (value) => {
-  if (value === null || value === undefined || Number.isNaN(Number(value))) {
-    return '—';
-  }
-  const number = Number(value);
-  if (number < 1000) {
-    return number.toString();
-  }
-  if (number < 1000000) {
-    return `${(number / 1000).toFixed(1)}k`;
-  }
-  return `${(number / 1000000).toFixed(1)}m`;
-};
-
-const buildMetric = (source, fallback) => {
-  if (source === undefined) {
-    return fallback;
-  }
-
-  if (typeof source === 'number') {
-    return {
-      ...fallback,
-      value: formatNumber(source),
-      delta: 'updated',
-      points: fallback.points
-    };
-  }
-
-  const total =
-    source.total ?? source.count ?? source.value ?? source.merged ?? source.open ?? source.closed ?? fallback.value;
-  const history = Array.isArray(source.trend)
-    ? source.trend
-    : Array.isArray(source.history)
-    ? source.history
-    : fallback.points;
-  const delta = source.delta ?? source.note ?? 'live';
-
-  return {
-    ...fallback,
-    value: formatNumber(total),
-    delta,
-    points: history.length ? history : fallback.points
-  };
-};
-
-const ensureDailyBucket = (bucketMap, dateKey) => {
-  if (!bucketMap.has(dateKey)) {
-    bucketMap.set(dateKey, {
-      pushes: 0,
-      pullRequests: 0,
-      merges: 0,
-      reviews: 0
-    });
-  }
-
-  return bucketMap.get(dateKey);
-};
-
-const buildSnapshotFromEvents = (events = []) => {
-  const totals = {
-    pushes: 0,
-    pullRequests: 0,
-    merges: 0,
-    reviews: 0
-  };
-
-  const dailyTotals = new Map();
-
-  events.forEach((event) => {
-    if (!event || !event.created_at) {
-      return;
-    }
-
-    const dateKey = event.created_at.slice(0, 10);
-    const bucket = ensureDailyBucket(dailyTotals, dateKey);
-
-    switch (event.type) {
-      case 'PushEvent': {
-        const addition =
-          event.payload?.size ??
-          (Array.isArray(event.payload?.commits) ? event.payload.commits.length : undefined) ??
-          1;
-        totals.pushes += addition;
-        bucket.pushes += addition;
-        break;
-      }
-      case 'PullRequestEvent': {
-        const action = event.payload?.action;
-        const pullRequest = event.payload?.pull_request;
-        if (action === 'opened') {
-          totals.pullRequests += 1;
-          bucket.pullRequests += 1;
-        }
-        if (pullRequest?.merged) {
-          totals.merges += 1;
-          bucket.merges += 1;
-        }
-        break;
-      }
-      case 'PullRequestReviewEvent':
-      case 'PullRequestReviewCommentEvent': {
-        totals.reviews += 1;
-        bucket.reviews += 1;
-        break;
-      }
-      default:
-        break;
-    }
-  });
-
-  const orderedDates = Array.from(dailyTotals.keys()).sort();
-  const windowDescriptor = orderedDates.length
-    ? `last ${orderedDates.length} day${orderedDates.length === 1 ? '' : 's'}`
-    : `last ${Math.min(events.length, 100)} events`;
-
-  const buildHistory = (key) => {
-    const fallback = SNAPSHOT_DEFAULT_LOOKUP[key];
-    const targetLength = fallback.points.length;
-
-    if (!orderedDates.length) {
-      return fallback.points;
-    }
-
-    const values = orderedDates.map((date) => dailyTotals.get(date)[key]);
-    const windowed = values.slice(-targetLength);
-
-    while (windowed.length < targetLength) {
-      windowed.unshift(0);
-    }
-
-    return windowed;
-  };
-
-  return {
-    pushes: { total: totals.pushes, trend: buildHistory('pushes'), delta: windowDescriptor },
-    pullRequests: { total: totals.pullRequests, trend: buildHistory('pullRequests'), delta: windowDescriptor },
-    merges: { total: totals.merges, trend: buildHistory('merges'), delta: windowDescriptor },
-    reviews: { total: totals.reviews, trend: buildHistory('reviews'), delta: windowDescriptor }
-  };
-};
-
-const fetchGitHubEventsSnapshot = async (signal) => {
-  const response = await fetch(
-    `https://api.github.com/users/${encodeURIComponent(GITHUB_USERNAME)}/events/public?per_page=100`,
-    {
-      headers: {
-        Accept: 'application/vnd.github+json'
-      },
-      signal
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(`GitHub events request failed with ${response.status}`);
-  }
-
-  const events = await response.json();
-  return buildSnapshotFromEvents(Array.isArray(events) ? events : []);
-};
-
-const fetchCustomSnapshot = async (signal) => {
-  if (!CUSTOM_SNAPSHOT_ENDPOINT) {
-    return null;
-  }
-
-  const response = await fetch(CUSTOM_SNAPSHOT_ENDPOINT, {
-    headers: {
-      Accept: 'application/json'
-    },
-    signal
-  });
-
-  if (!response.ok) {
-    throw new Error(`Custom snapshot request failed with ${response.status}`);
-  }
-
-  return response.json();
-};
-
-const requestSnapshot = async (signal) => {
-  if (CUSTOM_SNAPSHOT_ENDPOINT) {
-    try {
-      const custom = await fetchCustomSnapshot(signal);
-      if (custom) {
-        return custom;
-      }
-    } catch (error) {
-      console.warn('Custom metrics endpoint unavailable, falling back to GitHub events.', error);
-    }
-  }
-
-  return fetchGitHubEventsSnapshot(signal);
-};
-
-function useGitHubSnapshot() {
-  const [snapshot, setSnapshot] = useState(DEFAULT_SNAPSHOT);
-  const [updatedAt, setUpdatedAt] = useState(null);
-  const [isLive, setIsLive] = useState(false);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function loadMetrics() {
-      try {
-        const payload = await requestSnapshot(controller.signal);
-        const transformed = DEFAULT_SNAPSHOT.map((item) => buildMetric(payload[item.key], item));
-        setSnapshot(transformed);
-        setUpdatedAt(new Date().toISOString());
-        setIsLive(true);
-      } catch (error) {
-        console.info('Unable to load live GitHub metrics:', error.message);
-        setIsLive(false);
-      }
-    }
-
-    loadMetrics();
-
-    return () => controller.abort();
-  }, []);
-
-  return {
-    snapshot,
-    updatedAt,
-    isLive
-  };
-}
 
 function Home() {
-  const { snapshot, updatedAt, isLive } = useGitHubSnapshot();
-
-  const lastUpdated = useMemo(() => {
-    if (!updatedAt) {
-      return 'awaiting refresh';
-    }
-    const timestamp = new Date(updatedAt);
-    return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }, [updatedAt]);
-
   return (
-    <div className="relative">
-      <section className="relative overflow-hidden pb-20 pt-16">
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(120deg,rgba(123,45,58,0.12)_0%,rgba(244,237,225,0.9)_55%,rgba(251,246,238,1)_100%)]" />
-        <div className="absolute inset-y-0 right-0 -z-10 hidden w-1/2 bg-[radial-gradient(circle_at_top,rgba(123,45,58,0.3),transparent_65%)] lg:block" />
-        <div className="absolute inset-0 -z-10 opacity-50 [background-image:linear-gradient(rgba(123,45,58,0.09)_1px,transparent_1px),linear-gradient(90deg,rgba(123,45,58,0.09)_1px,transparent_1px)] [background-size:32px_32px]" />
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-16 px-6 lg:flex-row lg:items-center">
-          <div className="max-w-2xl text-center lg:text-left">
-            <span className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand-sand/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-brand-muted">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+    <div>
+      {/* Hero — centered, name-forward */}
+      <section className="border-b border-ink-300 dark:border-ink-700">
+        <div className="mx-auto flex max-w-content flex-col items-center px-6 py-section text-center">
+          <p className="eyebrow">AI Engineer & Implementation Consultant</p>
+          <h1 className="mt-8 text-5xl font-medium leading-[1.02] tracking-tight text-ink-black dark:text-white sm:text-7xl lg:text-8xl">
+            Srihari Raman
+          </h1>
+          <p className="mt-8 max-w-[62ch] text-lg leading-relaxed text-ink-700 dark:text-ink-300">
+            I build LLM systems that run in production: RAG pipelines, multi-agent workflows, and the
+            infrastructure behind them. Recent work includes government OpenData platforms, an enterprise
+            AI firewall, and industrial data pipelines.
+          </p>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <Button to="/consulting">Consulting Services</Button>
+            <Button href="https://koalendar.com/e/discovery-call-with-srihari" variant="secondary">
+              Schedule a Call
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Capabilities + Currently Exploring — bento */}
+      <section className="border-b border-ink-300 dark:border-ink-700">
+        <div className="mx-auto max-w-content px-6 py-section">
+          <p className="eyebrow">Capabilities</p>
+          <h2 className="section-heading mt-4">What I build</h2>
+          <p className="section-subtitle mt-4 max-w-[65ch]">
+            From LLM integration to multi-agent orchestration, I build AI systems teams can actually deploy and maintain.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            {capabilities.map((skill) => (
+              <span key={skill} className="tag">
+                {skill}
               </span>
-              AI Engineer & Consultant
-            </span>
-            <h1 className="mt-6 text-4xl font-heading font-semibold tracking-tight text-brand-deep sm:text-5xl lg:text-[52px]">
-              Srihari Raman · AI Engineer & Implementation Consultant
-            </h1>
-            <p className="mt-6 text-lg leading-relaxed text-brand-ink/80">
-              I design, build, and deploy production-ready AI systems. From LLM integration to multi-agent orchestration, I help organizations transform their business with AI that delivers measurable results.
-            </p>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
-              <Button to="/consulting">Consulting Services</Button>
-              <Button href="https://koalendar.com/e/discovery-call-with-srihari?month=2025-10&duration=30&date=2025-10-03" variant="secondary">
-                Schedule a Call
-              </Button>
-            </div>
+            ))}
           </div>
-          <div className="w-full max-w-sm rounded-3xl border border-brand/15 bg-brand-cream/80 p-6 shadow-card backdrop-blur">
-            <div className="relative overflow-hidden rounded-2xl bg-brand-deep/90 p-4 text-left text-brand-cream">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3 text-xs uppercase tracking-[0.35em] text-brand-muted">
-                  <span className="relative flex h-3 w-3">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-400" />
-                  </span>
-                  GitImpact
+
+          <p className="eyebrow mt-section">Currently Exploring</p>
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            {interests.map((interest, index) => (
+              <article
+                key={interest.title}
+                className={`card card-hover p-8 ${index === 2 ? 'md:col-span-2' : ''}`}
+              >
+                <h3 className="text-lg font-medium text-ink-black dark:text-white">{interest.title}</h3>
+                <p className="mt-3 max-w-[65ch] text-sm leading-relaxed text-ink-700 dark:text-ink-300">
+                  {interest.caption}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Selected Projects */}
+      <section className="border-b border-ink-300 dark:border-ink-700">
+        <div className="mx-auto max-w-content px-6 py-section">
+          <p className="eyebrow">Selected Projects</p>
+          <h2 className="section-heading mt-4">Production AI systems</h2>
+          <p className="section-subtitle mt-4 max-w-[65ch]">
+            LLM, RAG, and enterprise AI infrastructure I've built and shipped for real teams.
+          </p>
+          <div className="mt-8 grid gap-6">
+            {projects.map((project) => (
+              <article key={project.title} className="card card-hover p-8">
+                <h3 className="text-lg font-medium text-ink-black dark:text-white">{project.title}</h3>
+                <p className="mt-3 max-w-[70ch] text-sm leading-relaxed text-ink-700 dark:text-ink-300">
+                  {project.description}
+                </p>
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  {project.tags.map((tag) => (
+                    <span key={tag} className="tag">
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-                <span className="text-[10px] uppercase tracking-wide text-brand-muted">Updated {lastUpdated}</span>
-              </div>
-              <p className="mt-3 text-lg font-semibold">Development Impact</p>
-              <div className="mt-6 space-y-6">
-                {snapshot.map((metric) => (
-                  <div key={metric.key} className="rounded-xl bg-brand-cream/10 p-4">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium text-brand-cream/80">{metric.label}</p>
-                      <span className="text-xs text-brand-muted">{isLive ? metric.delta : 'standby signal'} </span>
-                    </div>
-                    <div className="mt-3 flex items-end justify-between">
-                      <span className="text-3xl font-semibold text-brand-cream">{metric.value}</span>
-                      <Sparkline points={metric.points} stroke="#6ee7b7" fill="rgba(110,231,183,0.18)" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-brand/15 bg-brand-cream/90 py-16">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="grid gap-12 lg:grid-cols-2">
-            <div>
-              <h2 className="section-heading">Capabilities</h2>
-              <p className="mt-4 text-base text-brand-ink/70">
-                I architect production-ready AI systems—from LLM integration to multi-agent orchestration—that help organizations deploy scalable, reliable AI solutions that drive business value.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                {capabilityPills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="rounded-full border border-brand/15 bg-brand-sand px-4 py-2 text-sm text-brand-deep transition hover:-translate-y-0.5 hover:border-brand"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h2 className="section-heading">Currently Exploring</h2>
-              <div className="mt-6 grid gap-4">
-                {interests.map((interest) => (
-                  <article
-                    key={interest.title}
-                    className="group rounded-2xl border border-brand/15 bg-white/70 p-5 shadow-lg transition hover:-translate-y-1 hover:border-brand hover:shadow-card"
-                  >
-                    <p className="text-sm font-semibold text-brand-deep">{interest.title}</p>
-                    <p className="mt-2 text-sm text-brand-ink/70">{interest.caption}</p>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-brand/20 bg-brand-deep text-brand-cream">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-10 px-6 py-16 lg:flex-row lg:items-stretch">
-          <div className="flex-1 rounded-3xl border border-brand/30 bg-brand-cream/10 p-6 shadow-card backdrop-blur">
-            <img
-              src="/headshot.png"
-              alt="Portrait of Srihari Raman"
-              className="h-full w-full rounded-2xl object-cover object-center ring-2 ring-brand/50"
-            />
-          </div>
-          <div className="flex-1">
-            <h2 className="section-heading text-brand-cream">Selected Projects</h2>
-            <p className="mt-2 max-w-xl text-base text-brand-cream/80">
-              Production AI systems and frameworks demonstrating real-world implementation expertise across LLMs, RAG, and enterprise AI infrastructure.
-            </p>
-            <div className="mt-10 grid gap-6">
-              {projects.map((project) => (
-                <article
-                  key={project.title}
-                  className="flex h-full flex-col justify-between rounded-3xl border border-brand/30 bg-brand-cream/10 p-6 backdrop-blur transition hover:-translate-y-1 hover:border-brand hover:bg-brand-cream/20"
-                >
-                  <div>
-                    <p className="text-lg font-semibold text-brand-cream">{project.title}</p>
-                    <p className="mt-3 text-sm text-brand-cream/80">{project.description}</p>
-                  </div>
-                  <div className="mt-6 flex flex-wrap gap-2 text-xs uppercase tracking-wide text-brand-muted">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="rounded-full border border-brand/30 bg-brand-cream/10 px-3 py-1">
-                        {tag}
-                      </span>
+                {project.links.length > 0 && (
+                  <div className="mt-6 flex flex-wrap gap-4">
+                    {project.links.map((link) => (
+                      <a
+                        key={`${project.title}-${link.label}`}
+                        className="font-mono text-xs text-accent transition-colors hover:text-accent-dark dark:hover:text-accent-muted"
+                        href={link.href}
+                      >
+                        {link.label} →
+                      </a>
                     ))}
                   </div>
-                  {project.links.length > 0 && (
-                    <div className="mt-6 flex flex-wrap gap-3 text-xs uppercase tracking-wide text-brand-muted">
-                      {project.links.map((link) => (
-                        <a
-                          key={`${project.title}-${link.label}`}
-                          className="rounded-full border border-brand/30 bg-brand-cream/15 px-3 py-1 text-brand-cream transition hover:border-brand hover:text-brand"
-                          href={link.href}
-                        >
-                          {link.label}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </article>
-              ))}
-            </div>
+                )}
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="border-t border-brand/15 bg-brand-cream/95 py-16">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      {/* Platforms & Pipelines */}
+      <section className="border-b border-ink-300 dark:border-ink-700">
+        <div className="mx-auto max-w-content px-6 py-section">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <h2 className="section-heading">Platforms &amp; Pipelines</h2>
-              <p className="section-subtitle mt-2 max-w-2xl">
-                Production AI systems and data platforms I've built—from enterprise LLM firewalls to scalable analytics pipelines.
+              <p className="eyebrow">Platforms & Pipelines</p>
+              <h2 className="section-heading mt-4">Shipped work</h2>
+              <p className="section-subtitle mt-4 max-w-[60ch]">
+                From enterprise LLM firewalls to the data pipelines that feed them.
               </p>
             </div>
-            <Button variant="outline" href="https://www.linkedin.com/in/srihari-r-006034176/" className="border-brand text-brand hover:text-brand-light">
+            <Button href="https://www.linkedin.com/in/srihari-r-006034176/" variant="secondary">
               Connect on LinkedIn
             </Button>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {pipelines.map((pipeline) => (
-              <article
-                key={pipeline.name}
-                className="rounded-3xl border border-brand/15 bg-white/80 p-6 shadow-lg transition hover:-translate-y-1 hover:border-brand hover:shadow-card"
-              >
-                <div className="flex items-baseline justify-between">
-                  <p className="text-sm font-semibold text-brand-deep">{pipeline.name}</p>
-                  <span className="rounded-full bg-brand-deep/10 px-3 py-1 text-xs uppercase tracking-wide text-brand">
-                    {pipeline.status}
-                  </span>
+              <article key={pipeline.name} className="card card-hover flex flex-col p-8">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-base font-medium text-ink-black dark:text-white">{pipeline.name}</p>
                 </div>
-                <p className="mt-4 text-lg font-semibold text-brand-deep">{pipeline.highlight}</p>
-                <p className="mt-3 text-sm text-brand-ink/70">{pipeline.description}</p>
+                <span className="tag mt-4 self-start">{pipeline.status}</span>
+                <p className="mt-4 text-sm font-medium text-ink-black dark:text-white">{pipeline.highlight}</p>
+                <p className="mt-3 text-sm leading-relaxed text-ink-700 dark:text-ink-300">{pipeline.description}</p>
                 {pipeline.href && (
                   <a
                     href={pipeline.href}
-                    className="mt-4 inline-block rounded-full border border-brand/20 bg-brand-sand px-3 py-1 text-xs uppercase tracking-wide text-brand-deep transition hover:border-brand hover:text-brand"
+                    className="mt-6 font-mono text-xs text-accent transition-colors hover:text-accent-dark dark:hover:text-accent-muted"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -543,15 +213,21 @@ function Home() {
         </div>
       </section>
 
-      <section className="border-t border-brand/15 bg-brand-deep text-brand-cream">
-        <div className="mx-auto max-w-5xl px-6 py-16 text-center">
-          <h2 className="section-heading text-brand-cream">Ready to build your AI solution?</h2>
-          <p className="mt-4 text-base text-brand-cream/80">
-            From strategy to production deployment, I help organizations implement AI systems that deliver measurable business impact. Let's discuss your AI needs.
+      {/* Closing CTA */}
+      <section>
+        <div className="mx-auto max-w-content px-6 py-section">
+          <p className="eyebrow">Get in touch</p>
+          <h2 className="section-heading mt-4 max-w-[20ch]">Building an AI system? Let's talk specifics.</h2>
+          <p className="section-subtitle mt-4 max-w-[60ch]">
+            From first architecture sketch to the day it goes live, I help teams ship AI they can rely on.
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button href="https://koalendar.com/e/discovery-call-with-srihari?month=2025-10&duration=30&date=2025-10-03">Schedule a Consultation</Button>
-            <Button to="/consulting">Learn About Services</Button>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Button href="https://koalendar.com/e/discovery-call-with-srihari">
+              Schedule a Consultation
+            </Button>
+            <Button to="/consulting" variant="secondary">
+              Learn About Services
+            </Button>
           </div>
         </div>
       </section>

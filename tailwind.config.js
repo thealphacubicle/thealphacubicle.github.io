@@ -4,27 +4,40 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
     "./public/index.html"
   ],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        brand: {
-          deep: "#2f0c0c",
-          DEFAULT: "#7b2d3a",
-          light: "#b54a5a",
-          sand: "#f4ede1",
-          cream: "#fbf6ee",
-          muted: "#b39a8f",
-          accent: "#e9c46a",
-          ink: "#1c1a1a"
+        // Warm stone scale — warmer and more human than cool zinc grays.
+        ink: {
+          black: "#1A1714",
+          900: "#262320",
+          700: "#4B453E",
+          500: "#7D746A",
+          300: "#DAD4CB",
+          100: "#F5F2EC",
+          white: "#FFFFFF"
+        },
+        // Clay/terracotta — one confident, human accent (links, active nav, sparkline).
+        accent: {
+          DEFAULT: "#B4522E",
+          muted: "#C9805F",
+          dark: "#8F3F22"
         }
       },
       fontFamily: {
-        sans: ["'Inter'", "system-ui", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "sans-serif"],
-        heading: ["'Poppins'", "'Inter'", "sans-serif"]
+        sans: ["'Inter'", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "sans-serif"],
+        mono: ["'IBM Plex Mono'", "'JetBrains Mono'", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"]
       },
-      boxShadow: {
-        glow: "0 24px 45px -20px rgba(123, 45, 58, 0.4)",
-        card: "0 18px 35px -25px rgba(31, 6, 8, 0.65)"
+      borderRadius: {
+        DEFAULT: "6px",
+        card: "6px"
+      },
+      maxWidth: {
+        content: "1200px"
+      },
+      spacing: {
+        section: "96px"
       }
     }
   },

@@ -4,7 +4,7 @@ import Button from '../components/Button';
 const services = [
   {
     title: 'AI System Architecture & Design',
-    description: 'Design scalable AI architectures tailored to your business needs. From LLM integration to multi-agent orchestration, I help you build robust AI systems that deliver measurable results.',
+    description: 'I design the architecture for your AI system: LLM integration, multi-agent orchestration, and RAG pipelines, shaped around what you actually need to build.',
     highlights: [
       'Custom LLM integration and fine-tuning',
       'Multi-agent system design and orchestration',
@@ -14,21 +14,21 @@ const services = [
   },
   {
     title: 'AI Implementation & Deployment',
-    description: 'End-to-end implementation of AI solutions from concept to production. I handle the technical complexity so you can focus on business outcomes.',
+    description: 'I take the system from prototype to production and handle the hard parts: models, infrastructure, pipelines, and monitoring.',
     highlights: [
-      'Production-ready AI model deployment',
+      'Production AI model deployment',
       'Cloud infrastructure setup (AWS, Azure, GCP)',
-      'CI/CD pipelines for Generative AI systems',
+      'CI/CD pipelines for generative AI systems',
       'Monitoring and observability for AI systems'
     ]
   },
   {
     title: 'AI Strategy & Consulting',
-    description: 'Strategic guidance on AI adoption, technology selection, and implementation. I help organizations navigate the AI landscape with confidence.',
+    description: 'Straight answers on where AI fits, which tools to use, and the trade-offs that decide whether a project ships.',
     highlights: [
-      'AI adoption assessment and strategy',
-      'Technology stack recommendations',
-      'Team training and knowledge transfer'
+      'Where AI fits your business (and where it does not)',
+      'Tooling and stack recommendations',
+      'Team training and handoff, so your engineers own it'
     ]
   }
 ];
@@ -52,22 +52,22 @@ const process = [
   {
     step: '01',
     title: 'Discovery & Assessment',
-    description: 'We start with understanding your business goals, current infrastructure, and AI opportunities. This includes technical assessment and strategic planning.'
+    description: 'We map your goals, your current infrastructure, and where AI can help, then turn that into a technical assessment and a concrete plan.'
   },
   {
     step: '02',
     title: 'Design & Architecture',
-    description: 'I design a tailored AI solution architecture that aligns with your requirements, budget, and timeline. This includes technology selection and system design.'
+    description: 'A tailored solution architecture aligned to your requirements, budget, and timeline, including technology selection.'
   },
   {
     step: '03',
     title: 'Implementation & Development',
-    description: 'Hands-on development and implementation of your AI solution. I work closely with your team to ensure smooth integration and knowledge transfer.'
+    description: 'Hands-on development and integration, working with your team to transfer knowledge as we go.'
   },
   {
     step: '04',
     title: 'Deployment & Optimization',
-    description: 'Production deployment with monitoring, optimization, and ongoing support. I ensure your AI system performs reliably and scales with your business.'
+    description: 'Production deployment with monitoring and optimization, so the system performs reliably and scales.'
   }
 ];
 
@@ -75,15 +75,15 @@ const caseStudies = [
   {
     title: 'Enterprise LLM Firewall System',
     client: 'Fyras Solutions',
-    challenge: 'Build a scalable AI content moderation system for enterprise clients',
-    solution: 'Architected async NLP inference pipeline with customizable policy tuning, now currently in MVP development',
+    challenge: 'Build a scalable AI content-moderation system for enterprise clients.',
+    solution: 'Architected an async NLP inference pipeline with customizable policy tuning, now in MVP development.',
     technologies: ['Azure', 'Python', 'NLP', 'Microservices']
   },
   {
     title: 'OpenContext',
-    client: 'Burnes Center of Social Change (City of Boston)',
-    challenge: 'Give city entities and governments a repeatable, production-ready way to expose their OpenData portals to AI agents via MCP',
-    solution: 'Built OpenContext, a template-style platform that packages MCP server infrastructure for OpenData portals, deployed on AWS Bedrock with Lambda and API Gateway using CDK for Infrastructure as Code.',
+    client: 'Burnes Center for Social Change (City of Boston)',
+    challenge: 'Give city entities a repeatable, production-ready way to expose OpenData portals to AI agents via MCP.',
+    solution: 'Built OpenContext, a template-style platform packaging MCP server infrastructure for OpenData portals, deployed on AWS Bedrock with Lambda and API Gateway, provisioned via CDK.',
     technologies: ['AWS Bedrock', 'Claude Sonnet 4', 'MCP', 'AWS Lambda', 'API Gateway', 'AWS CDK', 'Multi-Agent AI'],
     href: 'https://thealphacubicle.dev/OpenContext-Site/'
   }
@@ -91,55 +91,43 @@ const caseStudies = [
 
 function Consulting() {
   return (
-    <div className="bg-brand-cream text-brand-ink">
-      <section className="border-b border-brand/20 bg-gradient-to-br from-brand-deep via-brand to-brand-deep text-brand-cream">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand-sand/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-brand-muted">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-              AI Implementation Consulting
-            </span>
-            <h1 className="mt-6 text-4xl font-heading font-semibold tracking-tight text-brand-cream sm:text-5xl lg:text-[52px]">
-              Transform Your Business with AI
-            </h1>
-            <p className="mt-6 text-lg leading-relaxed text-brand-cream/80">
-              I help organizations design, build, and deploy AI systems that drive real business value. From LLM integration to production-ready AI infrastructure, I deliver end-to-end AI solutions tailored to your needs.
-            </p>
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <Button href="https://koalendar.com/e/discovery-call-with-srihari?month=2025-10&duration=30&date=2025-10-03">
-                Schedule a Consultation
-              </Button>
-              <Button to="/resume" variant="secondary">
-                View My Experience
-              </Button>
-            </div>
+    <div>
+      {/* Intro */}
+      <section className="border-b border-ink-300 dark:border-ink-700">
+        <div className="mx-auto max-w-content px-6 py-section">
+          <p className="eyebrow">AI Implementation Consulting</p>
+          <h1 className="mt-6 max-w-[20ch] text-4xl font-medium leading-tight tracking-tight text-ink-black dark:text-white sm:text-5xl">
+            I design and deploy production AI systems.
+          </h1>
+          <p className="mt-6 max-w-[60ch] text-lg leading-relaxed text-ink-700 dark:text-ink-300">
+            I take AI systems from the first design through deployment: the architecture, the implementation,
+            and the operational work that keeps them running afterward.
+          </p>
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            <Button href="https://koalendar.com/e/discovery-call-with-srihari">
+              Schedule a Consultation
+            </Button>
+            <Button to="/resume" variant="secondary">
+              View My Experience
+            </Button>
           </div>
         </div>
       </section>
 
-      <section className="border-b border-brand/10 bg-brand-cream/95 py-16">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="text-center">
-            <h2 className="section-heading">Services</h2>
-            <p className="section-subtitle mt-2 max-w-2xl mx-auto">
-              Comprehensive AI engineering and implementation services to accelerate your AI adoption journey.
-            </p>
-          </div>
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
+      {/* Services */}
+      <section className="border-b border-ink-300 dark:border-ink-700">
+        <div className="mx-auto max-w-content px-6 py-section">
+          <p className="eyebrow">Services</p>
+          <h2 className="section-heading mt-4">How I can help</h2>
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
             {services.map((service) => (
-              <article
-                key={service.title}
-                className="flex h-full flex-col rounded-3xl border border-brand/15 bg-white/80 p-6 shadow-lg transition hover:-translate-y-1 hover:border-brand hover:shadow-card"
-              >
-                <h3 className="text-xl font-semibold text-brand-deep">{service.title}</h3>
-                <p className="mt-4 text-sm text-brand-ink/70">{service.description}</p>
-                <ul className="mt-6 space-y-2">
-                  {service.highlights.map((highlight, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-sm text-brand-ink/70">
-                      <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand" />
+              <article key={service.title} className="card card-hover flex flex-col p-8">
+                <h3 className="text-lg font-medium text-ink-black dark:text-white">{service.title}</h3>
+                <p className="mt-4 text-sm leading-relaxed text-ink-700 dark:text-ink-300">{service.description}</p>
+                <ul className="mt-6 space-y-3 border-t border-ink-300 pt-6 dark:border-ink-700">
+                  {service.highlights.map((highlight) => (
+                    <li key={highlight} className="flex gap-3 text-sm text-ink-700 dark:text-ink-300">
+                      <span className="font-mono text-accent" aria-hidden>—</span>
                       <span>{highlight}</span>
                     </li>
                   ))}
@@ -150,17 +138,18 @@ function Consulting() {
         </div>
       </section>
 
-      <section className="border-b border-brand/10 bg-brand-sand/70 py-16">
-        <div className="mx-auto max-w-6xl px-6">
-          <h2 className="section-heading">Technical Expertise</h2>
-          <p className="section-subtitle mt-2">Deep expertise across the modern AI stack.</p>
+      {/* Technical Expertise */}
+      <section className="border-b border-ink-300 dark:border-ink-700">
+        <div className="mx-auto max-w-content px-6 py-section">
+          <p className="eyebrow">Technical Expertise</p>
+          <h2 className="section-heading mt-4">The stack</h2>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {expertise.map((category) => (
-              <div key={category.category} className="rounded-3xl border border-brand/15 bg-white/80 p-6 shadow-lg">
-                <p className="text-sm font-semibold uppercase tracking-wide text-brand-muted">{category.category}</p>
+              <div key={category.category} className="card p-8">
+                <p className="eyebrow">{category.category}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {category.items.map((item) => (
-                    <span key={item} className="rounded-full border border-brand/20 bg-brand-sand px-3 py-1 text-xs text-brand-deep">
+                    <span key={item} className="tag">
                       {item}
                     </span>
                   ))}
@@ -171,50 +160,46 @@ function Consulting() {
         </div>
       </section>
 
-      <section className="border-b border-brand/10 bg-brand-cream/95 py-16">
-        <div className="mx-auto max-w-6xl px-6">
-          <h2 className="section-heading">Implementation Process</h2>
-          <p className="section-subtitle mt-2">A structured approach to delivering AI solutions that work.</p>
-          <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+      {/* Implementation Process */}
+      <section className="border-b border-ink-300 dark:border-ink-700">
+        <div className="mx-auto max-w-content px-6 py-section">
+          <p className="eyebrow">Implementation Process</p>
+          <h2 className="section-heading mt-4">A structured approach</h2>
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {process.map((item) => (
-              <article
-                key={item.step}
-                className="rounded-3xl border border-brand/15 bg-white/80 p-6 shadow-lg transition hover:-translate-y-1 hover:border-brand hover:shadow-card"
-              >
-                <span className="text-2xl font-heading font-semibold text-brand">{item.step}</span>
-                <h3 className="mt-4 text-lg font-semibold text-brand-deep">{item.title}</h3>
-                <p className="mt-3 text-sm text-brand-ink/70">{item.description}</p>
+              <article key={item.step} className="card card-hover p-8">
+                <span className="font-mono text-sm text-ink-500">{item.step}</span>
+                <h3 className="mt-4 text-base font-medium text-ink-black dark:text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-ink-700 dark:text-ink-300">{item.description}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="border-b border-brand/10 bg-brand-deep text-brand-cream py-16">
-        <div className="mx-auto max-w-6xl px-6">
-          <h2 className="section-heading text-brand-cream">Case Studies</h2>
-          <p className="section-subtitle mt-2 text-brand-cream/80">
-            Real-world AI implementations delivering measurable business impact.
-          </p>
+      {/* Case Studies */}
+      <section className="border-b border-ink-300 dark:border-ink-700">
+        <div className="mx-auto max-w-content px-6 py-section">
+          <p className="eyebrow">Case Studies</p>
+          <h2 className="section-heading mt-4">Selected engagements</h2>
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             {caseStudies.map((study) => (
-              <article
-                key={study.title}
-                className="flex h-full flex-col rounded-3xl border border-brand/30 bg-brand-cream/10 p-6 backdrop-blur transition hover:-translate-y-1 hover:border-brand hover:bg-brand-cream/20"
-              >
-                <div className="mb-4">
-                  <p className="text-xs uppercase tracking-wide text-brand-muted">{study.client}</p>
-                  <h3 className="mt-2 text-lg font-semibold text-brand-cream">{study.title}</h3>
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-brand-cream/90">Challenge</p>
-                  <p className="mt-1 text-sm text-brand-cream/70">{study.challenge}</p>
-                  <p className="mt-4 text-sm font-medium text-brand-cream/90">Solution</p>
-                  <p className="mt-1 text-sm text-brand-cream/70">{study.solution}</p>
+              <article key={study.title} className="card card-hover flex flex-col p-8">
+                <p className="eyebrow">{study.client}</p>
+                <h3 className="mt-3 text-lg font-medium text-ink-black dark:text-white">{study.title}</h3>
+                <div className="mt-6 flex-1 space-y-4 border-t border-ink-300 pt-6 dark:border-ink-700">
+                  <div>
+                    <p className="font-mono text-xs text-ink-500">Challenge</p>
+                    <p className="mt-1 text-sm leading-relaxed text-ink-700 dark:text-ink-300">{study.challenge}</p>
+                  </div>
+                  <div>
+                    <p className="font-mono text-xs text-ink-500">Solution</p>
+                    <p className="mt-1 text-sm leading-relaxed text-ink-700 dark:text-ink-300">{study.solution}</p>
+                  </div>
                 </div>
                 <div className="mt-6 flex flex-wrap gap-2">
                   {study.technologies.map((tech) => (
-                    <span key={tech} className="rounded-full border border-brand/30 bg-brand-cream/10 px-3 py-1 text-xs uppercase tracking-wide text-brand-muted">
+                    <span key={tech} className="tag">
                       {tech}
                     </span>
                   ))}
@@ -222,7 +207,7 @@ function Consulting() {
                 {study.href && (
                   <a
                     href={study.href}
-                    className="mt-4 inline-block rounded-full border border-brand/30 bg-brand-cream/15 px-3 py-1 text-xs uppercase tracking-wide text-brand-cream transition hover:border-brand hover:text-brand"
+                    className="mt-6 font-mono text-xs text-accent transition-colors hover:text-accent-dark dark:hover:text-accent-muted"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -235,19 +220,23 @@ function Consulting() {
         </div>
       </section>
 
-      <section className="bg-brand-cream/95 py-16">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="section-heading">Ready to Build Your AI Solution?</h2>
-          <p className="mt-4 text-base text-brand-ink/70">
-            Let's discuss how AI can transform your business. I offer flexible engagement models from strategic consulting to full implementation.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button href="https://koalendar.com/e/discovery-call-with-srihari?month=2025-10&duration=30&date=2025-10-03">
-              Schedule a Discovery Call
-            </Button>
-            <Button to="/" variant="secondary">
-              Learn More About Me
-            </Button>
+      {/* CTA — single wide card */}
+      <section>
+        <div className="mx-auto max-w-content px-6 py-section">
+          <div className="card p-12">
+            <p className="eyebrow">Get in touch</p>
+            <h2 className="section-heading mt-4 max-w-[24ch]">Let's discuss what you're building.</h2>
+            <p className="section-subtitle mt-4 max-w-[60ch]">
+              Flexible engagement models, from strategic consulting to full implementation.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Button href="https://koalendar.com/e/discovery-call-with-srihari">
+                Schedule a Discovery Call
+              </Button>
+              <Button to="/" variant="secondary">
+                Learn More About Me
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -256,4 +245,3 @@ function Consulting() {
 }
 
 export default Consulting;
-
