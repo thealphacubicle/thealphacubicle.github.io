@@ -1,0 +1,226 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+html {
+  color-scheme: dark;
+  scrollbar-gutter: stable;
+}
+
+/* Lenis — inlined so Tailwind/PostCSS does not resolve node_modules from /app. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.lenis.lenis-autoToggle {
+  transition-property: overflow;
+  transition-duration: 1ms;
+  transition-behavior: allow-discrete;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  [data-reveal],
+  [data-gold-rule],
+  .stagger-container,
+  .stagger-item {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}
+
+@theme inline {
+  /* Literal families — @theme inline cannot resolve next/font runtime variables. */
+  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+  --font-heading: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-manrope: "Manrope", "Manrope Fallback", ui-sans-serif, system-ui, sans-serif;
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-border-gold: var(--border-gold);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --container-content: 70rem;
+  --max-width-content: 70rem;
+}
+
+/* Dark-only: :root matches .dark so missing class still paints black. */
+:root,
+.dark {
+  --background: #0a0a0a;
+  --foreground: #c9ccd1;
+  --card: #111112;
+  --card-foreground: #c9ccd1;
+  --popover: #111112;
+  --popover-foreground: #c9ccd1;
+  --primary: #c49256;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1a1a1c;
+  --secondary-foreground: #c9ccd1;
+  --muted: #1a1a1c;
+  --muted-foreground: #9aa0a8;
+  --accent: #1a1a1c;
+  --accent-foreground: #c49256;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: #232326;
+  --input: #232326;
+  --ring: color-mix(in oklab, #c49256 40%, transparent);
+  --border-gold: color-mix(in oklab, #c49256 20%, transparent);
+  --chart-1: #c49256;
+  --chart-2: #c9ccd1;
+  --chart-3: #858991;
+  --chart-4: #232326;
+  --chart-5: #111112;
+  --radius: 0.625rem;
+  --sidebar: #111112;
+  --sidebar-foreground: #c9ccd1;
+  --sidebar-primary: #c49256;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #1a1a1c;
+  --sidebar-accent-foreground: #c49256;
+  --sidebar-border: #232326;
+  --sidebar-ring: color-mix(in oklab, #c49256 40%, transparent);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground;
+  }
+
+  html {
+    @apply font-sans;
+  }
+}
+
+@layer utilities {
+  .heading {
+    font-family: var(--font-heading);
+    color: var(--foreground);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+
+  .display-name {
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--foreground);
+  }
+}
+
+@keyframes stagger-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes stagger-in {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+.stagger-container {
+  animation: 0.3s both stagger-fade-in;
+}
+
+.stagger-item {
+  animation: 0.35s cubic-bezier(0.22, 1, 0.36, 1) both stagger-in;
+}
+
+.stagger-delay-1 {
+  animation-delay: 0.05s;
+}
+
+.stagger-delay-2 {
+  animation-delay: 0.13s;
+}
+
+.stagger-delay-3 {
+  animation-delay: 0.21s;
+}
+
+.stagger-delay-4 {
+  animation-delay: 0.29s;
+}

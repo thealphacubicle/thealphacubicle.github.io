@@ -32,7 +32,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git diff --quiet || (git add src/ && git commit -m "chore: apply eslint auto-fixes [skip ci]" && git push)
+          git diff --quiet || (git add app/ components/ lib/ && git commit -m "chore: apply eslint auto-fixes [skip ci]" && git push)
+
+      - name: Typecheck
+        run: npm run typecheck
 
       - name: Build
         run: npm run build

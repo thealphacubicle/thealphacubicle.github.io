@@ -1,5 +1,5 @@
-# https://www.robotstxt.org/robotstxt.html
-User-agent: *
-Disallow:
+User-Agent: *
+Allow: /
 
-Sitemap: https://thealphacubicle.github.io/<repository>/sitemap.xml
+Host: https://thealphacubicle.dev
+Sitemap: https://thealphacubicle.dev/sitemap.xml
