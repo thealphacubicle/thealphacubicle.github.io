@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Manrope } from "next/font/google";
 
-import { CommandTerminal } from "@/components/terminal/command-terminal";
+import { CommandHintModal } from "@/components/site/command-hint-modal";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
 import { SmoothScroll } from "@/components/site/smooth-scroll";
+import { CommandTerminal } from "@/components/terminal/command-terminal";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import "./globals.css";
@@ -62,6 +63,7 @@ export default function RootLayout({
             <SiteHeader />
             <div className="flex-1">{children}</div>
             <SiteFooter />
+            <CommandHintModal />
             <CommandTerminal />
           </TooltipProvider>
         </SmoothScroll>

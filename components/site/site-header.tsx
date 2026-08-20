@@ -39,7 +39,7 @@ export function SiteHeader() {
               key={item.to}
               href={item.to}
               className={cn(
-                "hidden font-manrope text-sm font-medium tracking-tight text-muted-foreground motion-safe:transition-colors hover:text-foreground sm:inline",
+                "hidden font-manrope text-sm font-medium tracking-tight text-muted-foreground motion-safe:transition-colors hover:text-foreground md:inline",
                 goldFocusRing,
               )}
             >

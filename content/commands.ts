@@ -1,5 +1,3 @@
-import { formatSkillsOutput } from "@/content/skills";
-
 export type CommandDef = {
   name: string;
   usage: string;
@@ -27,6 +25,11 @@ export const commands: CommandDef[] = [
     description: "Who I am",
   },
   {
+    name: "projects",
+    usage: "/projects",
+    description: "Projects I've worked on",
+  },
+  {
     name: "contact",
     usage: "/contact",
     description: "Email me",
@@ -51,6 +54,12 @@ export const navigateTargets: NavigateTarget[] = [
     hash: "#work",
   },
   {
+    id: "projects",
+    aliases: ["projects", "project"],
+    description: "Projects",
+    hash: "#projects",
+  },
+  {
     id: "about",
     aliases: ["about", "me"],
     description: "A Little About Me",
@@ -73,20 +82,6 @@ export const navigateTargets: NavigateTarget[] = [
 export const bkgText = `Engineer in Wilmington. I build AI systems teams can actually run — search over their own data, tools that do multi-step work, and the cloud underneath. SWE @ JP Morgan. Before that: civic AI for Boston (Burnes Center → City), an LLM firewall at Fyras, and factory data pipelines at Gillette.`;
 
 export const commandNotFoundHint = "type /help for a list of commands";
-
-export function formatHelpOutput(): string {
-  const width = Math.max(...commands.map((command) => command.usage.length));
-  return commands
-    .map(
-      (command) =>
-        `${command.usage.padEnd(width + 2)}${command.description}`,
-    )
-    .join("\n");
-}
-
-export function formatSkillsCommandOutput(): string {
-  return formatSkillsOutput();
-}
 
 export function resolveNavigateTarget(
   arg: string,
