@@ -200,15 +200,14 @@ export function CommandTerminal() {
       }
 
       const element = document.querySelector(target.hash);
+      const node = element instanceof HTMLElement ? element : null;
 
       if (lenis) {
-        lenis.scrollTo(element ?? target.hash, { offset: HEADER_OFFSET });
+        lenis.scrollTo(node ?? target.hash, { offset: HEADER_OFFSET });
         return;
       }
 
-      if (element instanceof HTMLElement) {
-        element.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      node?.scrollIntoView({ behavior: "smooth", block: "start" });
     },
     [lenis],
   );
