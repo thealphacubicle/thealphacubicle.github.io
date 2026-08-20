@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { ConnectAvatars } from "@/components/home/connect-avatars";
+import { ProjectGrid } from "@/components/home/project-grid";
 import { WorkList } from "@/components/home/work-list";
 import { CommandHintCallout } from "@/components/site/command-hint-button";
 import { Reveal } from "@/components/site/reveal";
@@ -14,6 +15,7 @@ import {
   title,
 } from "@/content/profile";
 import { workHeading } from "@/content/experience";
+import { projectsHeading } from "@/content/projects";
 
 export default function HomePage() {
   const { lead, rest } = aboutCopy(aboutPlaceholder);
@@ -56,6 +58,15 @@ export default function HomePage() {
           <h2 className="heading text-4xl sm:text-5xl md:text-6xl">{workHeading}</h2>
           <div className="mt-12">
             <WorkList />
+          </div>
+        </Reveal>
+      </Section>
+
+      <Section id="projects" className="border-t border-border">
+        <Reveal>
+          <h2 className="heading text-4xl sm:text-5xl md:text-6xl">{projectsHeading}</h2>
+          <div className="mt-12">
+            <ProjectGrid />
           </div>
         </Reveal>
       </Section>

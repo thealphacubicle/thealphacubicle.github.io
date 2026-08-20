@@ -47,9 +47,3 @@ export const expertise: ExpertiseCategory[] = [
     ],
   },
 ];
-
-export function formatSkillsOutput(): string {
-  return expertise
-    .map((group) => `${group.category}\n  ${group.items.join(", ")}`)
-    .join("\n\n");
-}

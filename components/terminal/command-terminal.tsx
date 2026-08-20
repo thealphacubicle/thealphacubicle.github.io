@@ -3,6 +3,7 @@
 import { useLenis } from "lenis/react";
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 
+import { CommandOutput, type TerminalBody, type TerminalEntry } from "@/components/terminal/command-output";
 import {
   Dialog,
   DialogContent,
@@ -11,11 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import {
   HEADER_OFFSET,
-  bkgText,
   commandNotFoundHint,
   commands,
-  formatHelpOutput,
-  formatSkillsCommandOutput,
   navigateTargets,
   parseCommandInput,
   resolveNavigateTarget,
@@ -39,12 +37,6 @@ type SectionSuggestion = {
 };
 
 type Suggestion = CommandSuggestion | SectionSuggestion;
-
-type OutputLine = {
-  id: number;
-  prompt?: string;
-  text: string;
-};
 
 function suggestionsFor(value: string): Suggestion[] {
   const { name, arg, hasArgSeparator } = parseCommandInput(value);
@@ -115,7 +107,7 @@ export function CommandTerminal() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("/");
   const [highlight, setHighlight] = useState(0);
-  const [lines, setLines] = useState<OutputLine[]>([]);
+  const [entries, setEntries] = useState<TerminalEntry[]>([]);
 
   const suggestions = useMemo(() => suggestionsFor(value), [value]);
   const activeIndex =
@@ -126,7 +118,7 @@ export function CommandTerminal() {
   const openTerminal = useCallback(() => {
     setValue("/");
     setHighlight(0);
-    setLines([]);
+    setEntries([]);
     openRef.current = true;
     setOpen(true);
   }, []);
@@ -170,16 +162,34 @@ export function CommandTerminal() {
     return () => window.removeEventListener("keydown", onKey);
   }, [toggleTerminal]);
 
-  const print = useCallback((text: string, prompt?: string) => {
+  useEffect(() => {
+    if (!lenis) {
+      return;
+    }
+
+    if (open) {
+      lenis.stop();
+      return;
+    }
+
+    lenis.start();
+    return () => {
+      lenis.start();
+    };
+  }, [lenis, open]);
+
+  const print = useCallback((body: TerminalBody, prompt?: string) => {
     lineId.current += 1;
-    setLines((current) => [
+    setEntries((current) => [
       ...current,
-      { id: lineId.current, prompt, text },
+      { id: lineId.current, prompt, body },
     ]);
   }, []);
 
   const scrollToTarget = useCallback(
     (target: NavigateTarget) => {
+      lenis?.start();
+
       if (!target.hash) {
         if (lenis) {
           lenis.scrollTo(0);
@@ -190,8 +200,9 @@ export function CommandTerminal() {
       }
 
       const element = document.querySelector(target.hash);
+
       if (lenis) {
-        lenis.scrollTo(target.hash, { offset: HEADER_OFFSET });
+        lenis.scrollTo(element ?? target.hash, { offset: HEADER_OFFSET });
         return;
       }
 
@@ -204,8 +215,10 @@ export function CommandTerminal() {
 
   const runNavigate = useCallback(
     (target: NavigateTarget) => {
-      scrollToTarget(target);
       closeTerminal();
+      requestAnimationFrame(() => {
+        scrollToTarget(target);
+      });
     },
     [closeTerminal, scrollToTarget],
   );
@@ -214,17 +227,22 @@ export function CommandTerminal() {
     (name: string, arg: string, prompt: string) => {
       switch (name) {
         case "help":
-          print(formatHelpOutput(), prompt);
+          print({ kind: "help" }, prompt);
           setValue("/");
           setHighlight(0);
           return;
         case "bkg":
-          print(bkgText, prompt);
+          print({ kind: "bkg" }, prompt);
+          setValue("/");
+          setHighlight(0);
+          return;
+        case "projects":
+          print({ kind: "projects" }, prompt);
           setValue("/");
           setHighlight(0);
           return;
         case "skills":
-          print(formatSkillsCommandOutput(), prompt);
+          print({ kind: "skills" }, prompt);
           setValue("/");
           setHighlight(0);
           return;
@@ -236,7 +254,7 @@ export function CommandTerminal() {
           const target = resolveNavigateTarget(arg);
           if (!target) {
             print(
-              `usage: /navigate <section>\n${formatHelpOutput()}`,
+              { kind: "help", hint: "usage: /navigate <section>" },
               prompt,
             );
             setValue("/navigate ");
@@ -248,7 +266,7 @@ export function CommandTerminal() {
         }
         default:
           print(
-            `command not found: /${name || "?"}\n${commandNotFoundHint}`,
+            { kind: "error", text: `command not found: /${name || "?"}` },
             prompt,
           );
           setValue("/");
@@ -355,16 +373,21 @@ export function CommandTerminal() {
     >
       <DialogContent
         showCloseButton={false}
-        className="max-w-lg gap-0 overflow-hidden p-0 font-mono sm:max-w-lg"
+        className="flex max-h-[min(40rem,85svh)] max-w-lg flex-col gap-0 overflow-hidden p-0 font-mono sm:max-w-xl"
       >
-        <div ref={rootRef} data-command-terminal="">
+        <div
+          ref={rootRef}
+          data-command-terminal=""
+          data-lenis-prevent=""
+          className="flex min-h-0 min-w-0 flex-1 flex-col"
+        >
           <DialogTitle className="sr-only">Command terminal</DialogTitle>
           <DialogDescription className="sr-only">
             Type a slash command. Press Enter to run, Tab to complete, Escape
             to close.
           </DialogDescription>
 
-          <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
+          <div className="flex shrink-0 items-center gap-2 border-b border-border px-4 py-2.5">
             <span aria-hidden="true" className="size-2 rounded-full bg-muted-foreground/40" />
             <span aria-hidden="true" className="size-2 rounded-full bg-muted-foreground/40" />
             <span aria-hidden="true" className="size-2 rounded-full bg-muted-foreground/40" />
@@ -373,23 +396,9 @@ export function CommandTerminal() {
             </span>
           </div>
 
-          {lines.length > 0 ? (
-            <div className="max-h-48 overflow-auto border-b border-border px-4 py-3 text-[0.8rem] leading-relaxed text-muted-foreground">
-              {lines.map((line) => (
-                <div key={line.id} className="whitespace-pre-wrap">
-                  {line.prompt ? (
-                    <p className="text-foreground">
-                      <span className="text-primary">$ </span>
-                      {line.prompt}
-                    </p>
-                  ) : null}
-                  <p className="mt-1">{line.text}</p>
-                </div>
-              ))}
-            </div>
-          ) : null}
+          <CommandOutput entries={entries} />
 
-          <label className="flex items-center gap-2 px-4 py-3">
+          <label className="flex shrink-0 items-center gap-2 px-4 py-3">
             <span className="text-primary" aria-hidden="true">
               $
             </span>
@@ -408,7 +417,7 @@ export function CommandTerminal() {
           </label>
 
           {suggestions.length > 0 ? (
-            <ul className="border-t border-border py-1" role="listbox">
+            <ul className="shrink-0 border-t border-border py-1" role="listbox">
               {suggestions.map((suggestion, index) => {
                 const active = index === activeIndex;
                 return (
@@ -453,7 +462,7 @@ export function CommandTerminal() {
               })}
             </ul>
           ) : (
-            <p className="border-t border-border px-4 py-2 text-[0.75rem] text-muted-foreground">
+            <p className="shrink-0 border-t border-border px-4 py-2 text-[0.75rem] text-muted-foreground">
               {commandNotFoundHint}
             </p>
           )}

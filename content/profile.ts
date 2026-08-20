@@ -46,6 +46,7 @@ export const socialLinks: ContentLink[] = [linkedin, github, medium, wyzant];
 
 export const navItems: NavItem[] = [
   { name: "Work", to: "#work" },
+  { name: "Projects", to: "#projects" },
   { name: "About", to: "#about" },
   { name: "Connect", to: "#connect" },
 ];
@@ -73,9 +74,16 @@ export function aboutCopy(text: string): { lead: string; rest: string } {
 export const connectHeading = "Connect with me";
 
 export const commandHint = "⌘K";
+export const commandHintWindows = "Ctrl+K";
 export const commandHintAria = "Open command terminal (⌘K or Ctrl+K)";
 export const commandHintPrefix = "Press";
 export const commandHintSuffix = "to explore";
+
+export const commandHintModalTitle = "Explore from the keyboard";
+export const commandHintModalDescription =
+  "Press ⌘K on Mac or Ctrl+K on Windows to open the command bar.";
+export const commandHintModalMac = "Mac";
+export const commandHintModalWindows = "Windows";
 
 export function copyrightLine(year: number): string {
   return `© ${year} ${name}`;
