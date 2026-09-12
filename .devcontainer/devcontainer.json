@@ -1,0 +1,14 @@
+{
+  "name": "thealphacubicle",
+  "image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:22-bookworm",
+  "remoteUser": "node",
+  "forwardPorts": [3000],
+  "postCreateCommand": "npm ci && npm install --global @anthropic-ai/claude-code",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code"
+      ]
+    }
+  }
+}
