@@ -95,6 +95,14 @@ Key updates to make:
    ```
    The `predeploy` script builds the app, then `gh-pages` publishes the `build` directory to the `gh-pages` branch. Configure GitHub Pages to serve from that branch.
 
+## Running the team
+
+Start a Claude Code agent-team run by giving the tech lead the request:
+
+```bash
+claude "tech-lead: build a new [X] page/section, delegate as needed"
+```
+
 ## 📄 License
 
 This template is provided as-is. Feel free to customize and adapt it for personal or commercial use. Attribution is appreciated but not required.
