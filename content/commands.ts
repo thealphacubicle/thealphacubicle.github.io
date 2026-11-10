@@ -102,7 +102,10 @@ export function parseCommandInput(value: string): {
   arg: string;
   hasArgSeparator: boolean;
 } {
-  const trimmed = value.trim();
+  // Keep a trailing space: "/navigate " means the command is chosen and the
+  // visitor is now picking a section, which is a different state from
+  // "/navigate" (still typing the command name).
+  const trimmed = value.trimStart();
   const body = trimmed.startsWith("/") ? trimmed.slice(1) : trimmed;
   const separator = body.indexOf(" ");
 

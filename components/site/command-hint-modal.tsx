@@ -17,9 +17,40 @@ import {
   commandHintModalWindows,
   commandHintWindows,
 } from "@/content/profile";
+import { COMMAND_TERMINAL_TOGGLE, isCommandShortcut } from "@/lib/command-terminal";
 import { cn } from "@/lib/utils";
 
 const STORAGE_KEY = "command-hint-modal-dismissed-v2";
+const SHOW_DELAY_MS = 400;
+
+/**
+ * The hint's lifecycle, once per browser tab session:
+ *
+ *   waiting ──(400ms)──▶ shown ──(close / ⌘K / terminal opened)──▶ dismissed
+ *      └──────────────(⌘K / terminal opened)───────────────────────────┘
+ *
+ * "dismissed" is final and remembered in sessionStorage. Opening the
+ * terminal in any way counts as dismissing: the visitor already found it.
+ */
+type HintPhase = "waiting" | "shown" | "dismissed";
+
+// Storage can throw (blocked cookies, some private modes). The hint is a
+// nicety, so failing to read or write it must never break the page.
+function wasDismissed(): boolean {
+  try {
+    return window.sessionStorage.getItem(STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function rememberDismissed() {
+  try {
+    window.sessionStorage.setItem(STORAGE_KEY, "1");
+  } catch {
+    // Ignore: worst case the hint shows again next visit.
+  }
+}
 
 function Keycap({
   children,
@@ -58,41 +89,56 @@ function Shortcut({
 }
 
 export function CommandHintModal() {
-  const [open, setOpen] = useState(false);
+  const [phase, setPhase] = useState<HintPhase>("waiting");
 
   useEffect(() => {
-    if (window.sessionStorage.getItem(STORAGE_KEY) === "1") {
+    // Read storage after mount: sessionStorage does not exist during the
+    // static build, so this cannot be the initial state.
+    if (wasDismissed()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing from browser storage
+      setPhase("dismissed");
       return;
     }
 
     const timeout = window.setTimeout(() => {
-      setOpen(true);
-    }, 400);
+      // Only a hint that is still waiting may appear; one the visitor already
+      // made redundant (by opening the terminal) stays dismissed.
+      setPhase((current) => (current === "waiting" ? "shown" : current));
+    }, SHOW_DELAY_MS);
 
     return () => window.clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
-    const dismissOnShortcut = (event: KeyboardEvent) => {
-      if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== "k") {
-        return;
-      }
+    if (phase === "dismissed") {
+      return;
+    }
 
-      setOpen(false);
-      window.sessionStorage.setItem(STORAGE_KEY, "1");
+    const dismiss = () => {
+      setPhase("dismissed");
+      rememberDismissed();
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (isCommandShortcut(event)) {
+        dismiss();
+      }
     };
 
-    window.addEventListener("keydown", dismissOnShortcut);
-    return () => window.removeEventListener("keydown", dismissOnShortcut);
-  }, []);
+    window.addEventListener("keydown", onKey);
+    window.addEventListener(COMMAND_TERMINAL_TOGGLE, dismiss);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener(COMMAND_TERMINAL_TOGGLE, dismiss);
+    };
+  }, [phase]);
 
   return (
     <Dialog
-      open={open}
+      open={phase === "shown"}
       onOpenChange={(next) => {
-        setOpen(next);
         if (!next) {
-          window.sessionStorage.setItem(STORAGE_KEY, "1");
+          setPhase("dismissed");
+          rememberDismissed();
         }
       }}
     >
