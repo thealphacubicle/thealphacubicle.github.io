@@ -1,9 +1,17 @@
 "use client";
 
 import { useLenis } from "lenis/react";
-import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from "react";
 
-import { CommandOutput, type TerminalBody, type TerminalEntry } from "@/components/terminal/command-output";
+import { CommandOutput } from "@/components/terminal/command-output";
 import {
   Dialog,
   DialogContent,
@@ -13,70 +21,22 @@ import {
 import {
   HEADER_OFFSET,
   commandNotFoundHint,
-  commands,
-  navigateTargets,
-  parseCommandInput,
-  resolveNavigateTarget,
-  type CommandDef,
   type NavigateTarget,
 } from "@/content/commands";
 import { gmailComposeHref } from "@/content/profile";
-import { COMMAND_TERMINAL_TOGGLE } from "@/lib/command-terminal";
+import { COMMAND_TERMINAL_TOGGLE, isCommandShortcut } from "@/lib/command-terminal";
+import {
+  activeIndex as activeIndexOf,
+  initialTerminalState,
+  inputMode,
+  suggestionDescription,
+  suggestionLabel,
+  suggestionsFor,
+  transition,
+  type TerminalEffect,
+  type TerminalEvent,
+} from "@/lib/terminal-machine";
 import { cn } from "@/lib/utils";
-
-type CommandSuggestion = {
-  kind: "command";
-  key: string;
-  command: CommandDef;
-};
-
-type SectionSuggestion = {
-  kind: "section";
-  key: string;
-  target: NavigateTarget;
-};
-
-type Suggestion = CommandSuggestion | SectionSuggestion;
-
-function suggestionsFor(value: string): Suggestion[] {
-  const { name, arg, hasArgSeparator } = parseCommandInput(value);
-
-  if (name === "navigate" && hasArgSeparator) {
-    const query = arg.toLowerCase();
-    return navigateTargets
-      .filter(
-        (target) =>
-          query.length === 0 ||
-          target.id.startsWith(query) ||
-          target.aliases.some((alias) => alias.startsWith(query)),
-      )
-      .map((target) => ({
-        kind: "section" as const,
-        key: target.id,
-        target,
-      }));
-  }
-
-  return commands
-    .filter((command) => command.name.startsWith(name))
-    .map((command) => ({
-      kind: "command" as const,
-      key: command.name,
-      command,
-    }));
-}
-
-function suggestionLabel(suggestion: Suggestion): string {
-  return suggestion.kind === "command"
-    ? suggestion.command.usage
-    : `/navigate ${suggestion.target.id}`;
-}
-
-function suggestionDescription(suggestion: Suggestion): string {
-  return suggestion.kind === "command"
-    ? suggestion.command.description
-    : suggestion.target.description;
-}
 
 function isTypingField(element: EventTarget | null, terminalRoot: HTMLElement | null) {
   if (!(element instanceof HTMLElement)) {
@@ -97,94 +57,27 @@ function isTypingField(element: EventTarget | null, terminalRoot: HTMLElement | 
   return !terminalRoot?.contains(element);
 }
 
+/**
+ * Renders the terminal. All behavior lives in `transition`
+ * (lib/terminal-machine.ts); this component only turns DOM events into
+ * machine events and runs the effects the machine asks for.
+ */
 export function CommandTerminal() {
   const lenis = useLenis();
-  const inputRef = useRef<HTMLInputElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
-  const lineId = useRef(0);
-  const openRef = useRef(false);
+  const listId = useId();
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("/");
-  const [highlight, setHighlight] = useState(0);
-  const [entries, setEntries] = useState<TerminalEntry[]>([]);
+  const [state, setState] = useState(initialTerminalState);
+  // Mirrors `state` so `dispatch` can compute the next state synchronously.
+  // That keeps effects like window.open inside the click/keypress that caused
+  // them, which is what browsers require to allow a new tab.
+  const stateRef = useRef(state);
 
-  const suggestions = useMemo(() => suggestionsFor(value), [value]);
-  const activeIndex =
-    suggestions.length === 0
-      ? 0
-      : Math.min(highlight, suggestions.length - 1);
-
-  const openTerminal = useCallback(() => {
-    setValue("/");
-    setHighlight(0);
-    setEntries([]);
-    openRef.current = true;
-    setOpen(true);
-  }, []);
-
-  const closeTerminal = useCallback(() => {
-    openRef.current = false;
-    setOpen(false);
-  }, []);
-
-  const toggleTerminal = useCallback(() => {
-    if (openRef.current) {
-      closeTerminal();
-      return;
-    }
-    openTerminal();
-  }, [closeTerminal, openTerminal]);
-
-  useEffect(() => {
-    const onToggle = () => {
-      toggleTerminal();
-    };
-
-    window.addEventListener(COMMAND_TERMINAL_TOGGLE, onToggle);
-    return () => window.removeEventListener(COMMAND_TERMINAL_TOGGLE, onToggle);
-  }, [toggleTerminal]);
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== "k") {
-        return;
-      }
-      if (isTypingField(event.target, rootRef.current)) {
-        return;
-      }
-
-      event.preventDefault();
-      toggleTerminal();
-    };
-
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [toggleTerminal]);
-
-  useEffect(() => {
-    if (!lenis) {
-      return;
-    }
-
-    if (open) {
-      lenis.stop();
-      return;
-    }
-
-    lenis.start();
-    return () => {
-      lenis.start();
-    };
-  }, [lenis, open]);
-
-  const print = useCallback((body: TerminalBody, prompt?: string) => {
-    lineId.current += 1;
-    setEntries((current) => [
-      ...current,
-      { id: lineId.current, prompt, body },
-    ]);
-  }, []);
+  const open = state.status === "open";
+  const suggestions = useMemo(() => suggestionsFor(state.input), [state.input]);
+  const activeIndex = activeIndexOf(state);
+  const mode = inputMode(state.input);
+  const optionId = (index: number) => `${listId}-option-${index}`;
 
   const scrollToTarget = useCallback(
     (target: NavigateTarget) => {
@@ -212,163 +105,90 @@ export function CommandTerminal() {
     [lenis],
   );
 
-  const runNavigate = useCallback(
-    (target: NavigateTarget) => {
-      closeTerminal();
-      requestAnimationFrame(() => {
-        scrollToTarget(target);
-      });
-    },
-    [closeTerminal, scrollToTarget],
-  );
-
-  const execute = useCallback(
-    (name: string, arg: string, prompt: string) => {
-      switch (name) {
-        case "help":
-          print({ kind: "help" }, prompt);
-          setValue("/");
-          setHighlight(0);
-          return;
-        case "bkg":
-          print({ kind: "bkg" }, prompt);
-          setValue("/");
-          setHighlight(0);
-          return;
-        case "projects":
-          print({ kind: "projects" }, prompt);
-          setValue("/");
-          setHighlight(0);
-          return;
-        case "skills":
-          print({ kind: "skills" }, prompt);
-          setValue("/");
-          setHighlight(0);
-          return;
+  const runEffect = useCallback(
+    (effect: TerminalEffect) => {
+      switch (effect.kind) {
         case "contact":
           window.open(gmailComposeHref, "_blank", "noopener,noreferrer");
-          closeTerminal();
           return;
-        case "navigate": {
-          const target = resolveNavigateTarget(arg);
-          if (!target) {
-            print(
-              { kind: "help", hint: "usage: /navigate <section>" },
-              prompt,
-            );
-            setValue("/navigate ");
-            setHighlight(0);
-            return;
-          }
-          runNavigate(target);
+        case "navigate":
+          // Wait a frame so the dialog has released the page before scrolling.
+          requestAnimationFrame(() => scrollToTarget(effect.target));
           return;
-        }
-        default:
-          print(
-            { kind: "error", text: `command not found: /${name || "?"}` },
-            prompt,
-          );
-          setValue("/");
-          setHighlight(0);
       }
     },
-    [closeTerminal, print, runNavigate],
+    [scrollToTarget],
   );
 
-  const completeSuggestion = useCallback((suggestion: Suggestion) => {
-    if (suggestion.kind === "section") {
-      setValue(`/navigate ${suggestion.target.id}`);
-      setHighlight(0);
+  const dispatch = useCallback(
+    (event: TerminalEvent) => {
+      const { state: next, effect } = transition(stateRef.current, event);
+      stateRef.current = next;
+      setState(next);
+      if (effect) {
+        runEffect(effect);
+      }
+    },
+    [runEffect],
+  );
+
+  useEffect(() => {
+    const onToggle = () => dispatch({ type: "toggle" });
+
+    window.addEventListener(COMMAND_TERMINAL_TOGGLE, onToggle);
+    return () => window.removeEventListener(COMMAND_TERMINAL_TOGGLE, onToggle);
+  }, [dispatch]);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (!isCommandShortcut(event) || isTypingField(event.target, rootRef.current)) {
+        return;
+      }
+
+      event.preventDefault();
+      dispatch({ type: "toggle" });
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!lenis) {
       return;
     }
 
-    setValue(
-      suggestion.command.name === "navigate"
-        ? "/navigate "
-        : `/${suggestion.command.name}`,
-    );
-    setHighlight(0);
-  }, []);
-
-  const submit = useCallback(() => {
-    const suggestion = suggestions[activeIndex];
-    const parsed = parseCommandInput(value);
-
-    if (suggestion?.kind === "section") {
-      runNavigate(suggestion.target);
+    if (open) {
+      lenis.stop();
       return;
     }
 
-    if (
-      suggestion?.kind === "command" &&
-      suggestion.command.name === "navigate" &&
-      !parsed.hasArgSeparator
-    ) {
-      setValue("/navigate ");
-      setHighlight(0);
-      return;
-    }
-
-    if (suggestion?.kind === "command") {
-      execute(suggestion.command.name, parsed.arg, `/${suggestion.command.name}`);
-      return;
-    }
-
-    execute(parsed.name, parsed.arg, value.trim() || "/");
-  }, [activeIndex, execute, runNavigate, suggestions, value]);
+    lenis.start();
+    return () => {
+      lenis.start();
+    };
+  }, [lenis, open]);
 
   const onInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
-      if (suggestions.length === 0) {
-        return;
-      }
-      setHighlight((current) => (current + 1) % suggestions.length);
+    const keyEvents: Partial<Record<string, TerminalEvent>> = {
+      ArrowDown: { type: "move", delta: 1 },
+      ArrowUp: { type: "move", delta: -1 },
+      Tab: { type: "complete" },
+      Enter: { type: "submit" },
+    };
+    const machineEvent = keyEvents[event.key];
+    if (!machineEvent) {
       return;
     }
 
-    if (event.key === "ArrowUp") {
-      event.preventDefault();
-      if (suggestions.length === 0) {
-        return;
-      }
-      setHighlight((current) =>
-        current === 0 ? suggestions.length - 1 : current - 1,
-      );
-      return;
-    }
-
-    if (event.key === "Tab") {
-      event.preventDefault();
-      const suggestion = suggestions[activeIndex];
-      if (suggestion) {
-        completeSuggestion(suggestion);
-      }
-      return;
-    }
-
-    if (event.key === "Enter") {
-      event.preventDefault();
-      submit();
-    }
-  };
-
-  const onValueChange = (next: string) => {
-    const normalized = next.startsWith("/") ? next : `/${next.replaceAll("/", "")}`;
-    setValue(normalized.length === 0 ? "/" : normalized);
-    setHighlight(0);
+    event.preventDefault();
+    dispatch(machineEvent);
   };
 
   return (
     <Dialog
       open={open}
-      onOpenChange={(next) => {
-        if (next) {
-          openTerminal();
-          return;
-        }
-        closeTerminal();
-      }}
+      onOpenChange={(next) => dispatch({ type: next ? "open" : "close" })}
     >
       <DialogContent
         showCloseButton={false}
@@ -377,13 +197,14 @@ export function CommandTerminal() {
         <div
           ref={rootRef}
           data-command-terminal=""
+          data-mode={mode}
           data-lenis-prevent=""
           className="flex min-h-0 min-w-0 flex-1 flex-col"
         >
           <DialogTitle className="sr-only">Command terminal</DialogTitle>
           <DialogDescription className="sr-only">
-            Type a slash command. Press Enter to run, Tab to complete, Escape
-            to close.
+            Type a slash command. Use the arrow keys to choose a suggestion,
+            Enter to run, Tab to complete, Escape to close.
           </DialogDescription>
 
           <div className="flex shrink-0 items-center gap-2 border-b border-border px-4 py-2.5">
@@ -395,35 +216,48 @@ export function CommandTerminal() {
             </span>
           </div>
 
-          <CommandOutput entries={entries} />
+          <CommandOutput entries={state.entries} />
 
           <label className="flex shrink-0 items-center gap-2 px-4 py-3">
             <span className="text-primary" aria-hidden="true">
               $
             </span>
             <input
-              ref={inputRef}
-              value={value}
+              value={state.input}
+              role="combobox"
+              aria-label="Command"
+              aria-autocomplete="list"
+              aria-expanded={suggestions.length > 0}
+              aria-controls={listId}
+              aria-activedescendant={
+                suggestions.length > 0 ? optionId(activeIndex) : undefined
+              }
               spellCheck={false}
               autoCapitalize="off"
               autoComplete="off"
               autoCorrect="off"
-              aria-label="Command"
               className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none"
-              onChange={(event) => onValueChange(event.target.value)}
+              onChange={(event) => dispatch({ type: "input", value: event.target.value })}
               onKeyDown={onInputKeyDown}
             />
           </label>
 
           {suggestions.length > 0 ? (
-            <ul className="shrink-0 border-t border-border py-1" role="listbox">
+            <ul
+              id={listId}
+              role="listbox"
+              aria-label={mode === "section" ? "Sections" : "Commands"}
+              className="shrink-0 border-t border-border py-1"
+            >
               {suggestions.map((suggestion, index) => {
                 const active = index === activeIndex;
                 return (
-                  <li key={suggestion.key}>
+                  <li key={suggestion.key} role="presentation">
                     <button
+                      id={optionId(index)}
                       type="button"
                       role="option"
+                      tabIndex={-1}
                       aria-selected={active}
                       className={cn(
                         "flex w-full items-baseline justify-between gap-4 px-4 py-2 text-left text-[0.8rem]",
@@ -431,22 +265,11 @@ export function CommandTerminal() {
                           ? "bg-muted text-foreground"
                           : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
                       )}
-                      onMouseEnter={() => setHighlight(index)}
+                      onMouseEnter={() => dispatch({ type: "hover", index })}
                       onMouseDown={(event) => {
+                        // Keep focus in the input so typing can continue.
                         event.preventDefault();
-                        if (suggestion.kind === "section") {
-                          runNavigate(suggestion.target);
-                          return;
-                        }
-                        if (suggestion.command.name === "navigate") {
-                          completeSuggestion(suggestion);
-                          return;
-                        }
-                        execute(
-                          suggestion.command.name,
-                          "",
-                          `/${suggestion.command.name}`,
-                        );
+                        dispatch({ type: "pick", index });
                       }}
                     >
                       <span className="shrink-0 text-foreground">
@@ -461,7 +284,10 @@ export function CommandTerminal() {
               })}
             </ul>
           ) : (
-            <p className="shrink-0 border-t border-border px-4 py-2 text-[0.75rem] text-muted-foreground">
+            <p
+              id={listId}
+              className="shrink-0 border-t border-border px-4 py-2 text-[0.75rem] text-muted-foreground"
+            >
               {commandNotFoundHint}
             </p>
           )}

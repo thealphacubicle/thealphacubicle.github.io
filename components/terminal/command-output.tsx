@@ -2,7 +2,7 @@
 
 import { ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import { GitHubMark } from "@/components/site/social-marks";
 import { Badge } from "@/components/ui/badge";
@@ -22,22 +22,12 @@ import {
 } from "@/content/commands";
 import { projects, type Project } from "@/content/projects";
 import { expertise } from "@/content/skills";
+import type { TerminalBody, TerminalEntry } from "@/lib/terminal-machine";
 import { cn, goldFocusRing } from "@/lib/utils";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-export type TerminalBody =
-  | { kind: "projects" }
-  | { kind: "skills" }
-  | { kind: "help"; hint?: string }
-  | { kind: "bkg" }
-  | { kind: "error"; text: string };
-
-export type TerminalEntry = {
-  id: number;
-  prompt?: string;
-  body: TerminalBody;
-};
+export type { TerminalBody, TerminalEntry };
 
 function FadeIn({
   children,
@@ -241,19 +231,51 @@ function renderBody(body: TerminalBody): ReactNode {
 }
 
 export function CommandOutput({ entries }: { entries: TerminalEntry[] }) {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const latestRef = useRef<HTMLDivElement>(null);
+  const latestId = entries.at(-1)?.id;
+
+  // Bring each new result into view, starting from its "$ /command" line, so
+  // a second command never prints below the fold where it looks like nothing
+  // happened.
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    const latest = latestRef.current;
+    if (!scroller || !latest || latestId === undefined) {
+      return;
+    }
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    scroller.scrollTo({
+      top:
+        scroller.scrollTop +
+        latest.getBoundingClientRect().top -
+        scroller.getBoundingClientRect().top -
+        12,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  }, [latestId]);
+
   if (entries.length === 0) {
     return null;
   }
 
   return (
     <div
+      ref={scrollerRef}
+      role="log"
+      aria-label="Command output"
       data-lenis-prevent=""
       data-lenis-prevent-wheel=""
       className="min-h-0 max-h-[min(24rem,50svh)] flex-1 overflow-x-hidden overflow-y-auto overscroll-contain border-b border-border px-3 py-3 [scrollbar-gutter:stable]"
     >
       <div className="space-y-4">
         {entries.map((entry) => (
-          <div key={entry.id} className="space-y-2.5">
+          <div
+            key={entry.id}
+            ref={entry.id === latestId ? latestRef : undefined}
+            className="space-y-2.5"
+          >
             {entry.prompt ? (
               <p className="font-mono text-[0.8rem] text-foreground">
                 <span className="text-primary">$ </span>
